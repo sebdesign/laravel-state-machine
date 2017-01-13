@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test\Commands;
 
-use Illuminate\Contracts\Console\Kernel;
-use Sebdesign\SM\Test\ConsoleHelpers;
 use Sebdesign\SM\Test\TestCase;
+use Sebdesign\SM\Test\ConsoleHelpers;
+use Illuminate\Contracts\Console\Kernel;
 
 class DebugTest extends TestCase
 {
@@ -38,7 +38,7 @@ class DebugTest extends TestCase
         $command = \Mockery::spy('\Sebdesign\SM\Commands\Debug[choice]', [$config]);
 
         $choices = [
-            'graphA' . "\t(" . 'App\User - graphA)',
+            'graphA'."\t(".'App\User - graphA)',
         ];
 
         $command->shouldReceive(['choice' => $choices[0]]);

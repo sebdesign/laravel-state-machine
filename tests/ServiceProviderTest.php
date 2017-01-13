@@ -2,14 +2,14 @@
 
 namespace Sebdesign\SM\Test;
 
-use Sebdesign\SM\ServiceProvider;
 use Sebdesign\SM\Commands\Debug;
-use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
 use SM\Factory\FactoryInterface;
-use SM\StateMachine\StateMachineInterface;
+use Sebdesign\SM\ServiceProvider;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
+use SM\StateMachine\StateMachineInterface;
+use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 
 class ServiceProviderTest extends TestCase
 {

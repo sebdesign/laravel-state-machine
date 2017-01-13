@@ -65,14 +65,14 @@ class Debug extends Command
     protected function askForGraph()
     {
         $choices = array_map(function ($name, $config) {
-            return $name . "\t(" . $config['class'] . ' - ' . $config['graph'] . ')';
+            return $name."\t(".$config['class'].' - '.$config['graph'].')';
         }, array_keys($this->config), $this->config);
 
         $choice = $this->choice('Which state machine would you like to know about?', $choices, 0);
 
         $choice = substr($choice, 0, strpos($choice, "\t"));
 
-        $this->info('You have just selected: '. $choice);
+        $this->info('You have just selected: '.$choice);
 
         $this->input->setArgument('graph', $choice);
     }
@@ -87,7 +87,6 @@ class Debug extends Command
             return [$state];
         }, $states));
     }
-
 
     /**
      * @param array           $transitions

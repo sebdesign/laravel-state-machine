@@ -35,7 +35,7 @@ class ContainerAwareCallback extends Callback
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function call(TransitionEvent $event)
     {

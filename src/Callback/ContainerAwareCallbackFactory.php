@@ -36,11 +36,11 @@ class ContainerAwareCallbackFactory extends CallbackFactory
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get(array $specs)
     {
-        if (!isset($specs['do'])) {
+        if (! isset($specs['do'])) {
             throw new SMException(sprintf(
                'CallbackFactory::get needs the index "do" to be able to build a callback, array %s given.',
                 json_encode($specs)
@@ -48,6 +48,7 @@ class ContainerAwareCallbackFactory extends CallbackFactory
         }
 
         $class = $this->class;
+
         return new $class($specs, $specs['do'], $this->container);
     }
 }

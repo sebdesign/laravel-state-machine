@@ -26,7 +26,7 @@ class Debug extends Command
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param array $config
      */
     public function __construct(array $config)
     {
@@ -62,6 +62,9 @@ class Debug extends Command
         $this->printTransitions($config['transitions']);
     }
 
+    /**
+     * Ask for a graph name if one was not provided as argument.
+     */
     protected function askForGraph()
     {
         $choices = array_map(function ($name, $config) {
@@ -78,8 +81,9 @@ class Debug extends Command
     }
 
     /**
-     * @param array           $states
-     * @param OutputInterface $output
+     * Display the graph states on a table.
+     *
+     * @param array $states
      */
     protected function printStates(array $states)
     {
@@ -89,8 +93,9 @@ class Debug extends Command
     }
 
     /**
-     * @param array           $transitions
-     * @param OutputInterface $output
+     * Display the graph transitions on a table.
+     *
+     * @param array $transitions
      */
     protected function printTransitions(array $transitions)
     {

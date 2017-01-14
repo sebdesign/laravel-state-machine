@@ -57,7 +57,6 @@ class ContainerAwareCallback extends Callback
     /**
      * Determine if the given string is in Class@method syntax.
      *
-     * @param  mixed  $callback
      * @return bool
      */
     protected function isCallableWithAtSign()

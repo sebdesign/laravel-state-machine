@@ -42,14 +42,4 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
     }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    protected function registerServiceProvider()
-    {
-        $this->app->registerDeferredProvider(ServiceProvider::class);
-    }
 }

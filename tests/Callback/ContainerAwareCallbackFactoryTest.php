@@ -42,7 +42,7 @@ class ContainerAwareCallbackFactoryTest extends TestCase
         // Arrange
 
         $factory = new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
-        $this->expectException(SMException::class);
+        $this->setExpectedException(SMException::class);
 
         // Act
 

@@ -3,7 +3,6 @@
 namespace Sebdesign\SM\Test;
 
 use StateMachine;
-use SM\StateMachine\StateMachineInterface;
 
 class FacadeTest extends TestCase
 {
@@ -15,14 +14,13 @@ class FacadeTest extends TestCase
         // Arrange
 
         $this->app['config']->set('state-machine.graphA.class', Article::class);
+
         $article = new Article();
+
+        StateMachine::shouldReceive('get')->with($article, 'graphA');
 
         // Act
 
-        $sm = StateMachine::get($article, 'graphA');
-
-        // Assert
-
-        $this->assertInstanceOf(StateMachineInterface::class, $sm);
+        StateMachine::get($article, 'graphA');
     }
 }

@@ -18,10 +18,6 @@ class ServiceProviderTest extends TestCase
      */
     public function the_configuration_is_published()
     {
-        // Act
-
-        $this->registerServiceProvider();
-
         // Assert
 
         $path = $this->getConfigurationPath();
@@ -34,13 +30,10 @@ class ServiceProviderTest extends TestCase
      */
     public function the_configuration_is_merged()
     {
-        // Act
-
-        $config = require $this->getConfigurationPath();
-
         // Assert
 
         // Load the configuration from the file
+        $config = require $this->getConfigurationPath();
 
         $this->assertEquals($this->app['config']['state-machine'], $config);
     }
@@ -48,7 +41,7 @@ class ServiceProviderTest extends TestCase
     /**
      * @test
      */
-    public function is_deferred()
+    public function is_not_deferred()
     {
         // Act
 
@@ -56,7 +49,7 @@ class ServiceProviderTest extends TestCase
 
         // Assert
 
-        $this->assertTrue($provider->isDeferred());
+        $this->assertFalse($provider->isDeferred());
     }
 
     /**
@@ -66,7 +59,7 @@ class ServiceProviderTest extends TestCase
     {
         // Act
 
-        $factory = $this->app[CallbackFactoryInterface::class];
+        $factory = $this->app->make('sm.callback.factory');
         $callback = $factory->get([
             'do' => function () {
             },
@@ -104,7 +97,7 @@ class ServiceProviderTest extends TestCase
 
         // Act
 
-        $factory = $this->app[FactoryInterface::class];
+        $factory = $this->app->make('sm.factory');
         $sm = $factory->get($article, 'graphA');
 
         // Assert
@@ -118,10 +111,6 @@ class ServiceProviderTest extends TestCase
      */
     public function the_debug_command_is_registered()
     {
-        // Arrange
-
-        $this->registerServiceProvider();
-
         // Act
 
         $command = $this->app[Debug::class];
@@ -138,7 +127,7 @@ class ServiceProviderTest extends TestCase
     {
         $provider = new ServiceProvider($this->app);
 
-        $this->assertContains(FactoryInterface::class, $provider->provides());
+        $this->assertContains('sm.factory', $provider->provides());
     }
 
     /**

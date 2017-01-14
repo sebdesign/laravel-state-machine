@@ -5,7 +5,6 @@ namespace Sebdesign\SM\Test;
 use Sebdesign\SM\Commands\Debug;
 use SM\Factory\FactoryInterface;
 use Sebdesign\SM\ServiceProvider;
-use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
 use SM\StateMachine\StateMachineInterface;
 use Sebdesign\SM\Callback\ContainerAwareCallback;

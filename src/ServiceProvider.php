@@ -19,7 +19,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * Bootstrap the application services.
@@ -41,36 +41,38 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/state-machine.php', 'state-machine');
 
         $this->registerCallbackFactory();
-        $this->registerCascadeTransitionCallback();
         $this->registerFactory();
+        $this->registerCascadeTransitionCallback();
         $this->registerCommands();
     }
 
     protected function registerCallbackFactory()
     {
-        $this->app->bind(CallbackFactoryInterface::class, function () {
+        $this->app->bind('sm.callback.factory', function () {
             return new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
         });
+
+        $this->app->alias('sm.callback.factory', CallbackFactoryInterface::class);
+    }
+
+    protected function registerFactory()
+    {
+        $this->app->singleton('sm.factory', function () {
+            return new Factory(
+                $this->app['config']['state-machine'],
+                new EventDispatcher(),
+                $this->app->make('sm.callback.factory')
+            );
+        });
+
+        $this->app->alias('sm.factory', FactoryInterface::class);
     }
 
     protected function registerCascadeTransitionCallback()
     {
         $this->app->bind(CascadeTransitionCallback::class, function () {
-            return new CascadeTransitionCallback($this->app->make(FactoryInterface::class));
+            return new CascadeTransitionCallback($this->app->make('sm.factory'));
         });
-    }
-
-    protected function registerFactory()
-    {
-        $this->app->singleton(FactoryInterface::class, function () {
-            return new Factory(
-                $this->app['config']['state-machine'],
-                new EventDispatcher(),
-                $this->app->make(CallbackFactoryInterface::class)
-            );
-        });
-
-        $this->app->alias(FactoryInterface::class, 'sm.factory');
     }
 
     protected function registerCommands()
@@ -92,7 +94,8 @@ class ServiceProvider extends BaseServiceProvider
     public function provides()
     {
         return [
-            FactoryInterface::class,
+            'sm.factory',
+            'sm.callback.factory',
             Debug::class,
         ];
     }

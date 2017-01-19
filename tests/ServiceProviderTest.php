@@ -9,6 +9,7 @@ use SM\Callback\CascadeTransitionCallback;
 use SM\StateMachine\StateMachineInterface;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProviderTest extends TestCase
 {
@@ -68,6 +69,20 @@ class ServiceProviderTest extends TestCase
 
         $this->assertInstanceOf(ContainerAwareCallbackFactory::class, $factory);
         $this->assertInstanceOf(ContainerAwareCallback::class, $callback);
+    }
+
+    /**
+     * @test
+     */
+    public function the_event_dispatcher_is_registered()
+    {
+        // Act
+
+        $dispatcher = $this->app->make('sm.event.dispatcher');
+
+        // Assert
+
+        $this->assertInstanceOf(EventDispatcherInterface::class, $dispatcher);
     }
 
     /**

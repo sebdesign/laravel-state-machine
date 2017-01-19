@@ -43,6 +43,8 @@ Please see the documentation of the [StateMachineBundle](https://github.com/winz
 ## Usage
 
 ``` php
+<?php
+
 // Get the article
 $article = App\Article::find($id);
 
@@ -61,6 +63,8 @@ public function method(SM\Factory\FactoryInterface $factory)
 Now you can use the `$stateMachine` to interact with the state of the `$article`.
 
 ``` php
+<?php
+
 // Get the actual state of the object
 $stateMachine->getState();
 
@@ -83,6 +87,8 @@ E.g.:
 You want to call the `handle` method on the `MyService` class to determine if the state machine can apply the `submit_changes` transition.
 
 ```php
+<?php
+
 'callbacks' => [
     // will be called when testing a transition
     'guard' => [
@@ -101,6 +107,44 @@ You want to call the `handle` method on the `MyService` class to determine if th
 ```
 
 You can specify callbacks in array format, e.g. `['Class', 'method']`, or in *@* delimited string format, e.g. `Class@method`.
+
+### Events
+
+When checking if a transition can be applied, the `SM\Event\SMEvents::TEST_TRANSITION` event is fired.
+
+Before and after a transition is being applied, the `SM\Event\SMEvents::PRE_TRANSITION` and `SM\Event\SMEvents::POST_TRANSITION` events are fired respectively.
+
+All the events receive an `SM\Event\TransitionEvent` instance.
+
+If you wish to listen to all the events with the same listener, you can use the `winzou.state_machine.*` wildcard parameter.
+
+You can define your own listeners in your app's `EventServiceProvider`. E.g.:
+
+```php
+<?php
+
+use SM\Event\SMEvents;
+
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    SMEvents::TEST_TRANSITION => [
+        \App\Listeners\CheckTransition::class,
+    ],
+    SMEvents::PRE_TRANSITION => [
+        \App\Listeners\BeforeTransition::class,
+    ],
+    SMEvents::POST_TRANSITION => [
+        \App\Listeners\AfterTransition::class,
+    ],
+    'winzou.state_machine.*' => [
+        \App\Listeners\Transition::class,
+    ],
+];
+```
 
 ### Debug command
 

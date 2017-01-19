@@ -2,15 +2,17 @@
 
 namespace Sebdesign\SM;
 
-use SM\Factory\Factory;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Sebdesign\SM\Commands\Debug;
-use SM\Factory\FactoryInterface;
+use Sebdesign\SM\Event\Dispatcher;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
+use SM\Factory\Factory;
+use SM\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -41,6 +43,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/state-machine.php', 'state-machine');
 
         $this->registerCallbackFactory();
+        $this->registerEventDispatcher();
         $this->registerFactory();
         $this->registerCascadeTransitionCallback();
         $this->registerCommands();
@@ -55,12 +58,21 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->alias('sm.callback.factory', CallbackFactoryInterface::class);
     }
 
+    protected function registerEventDispatcher()
+    {
+        $this->app->bind('sm.event.dispatcher', function () {
+            return new Dispatcher($this->app['events']);
+        });
+
+        $this->app->alias('sm.event.dispatcher', EventDispatcherInterface::class);
+    }
+
     protected function registerFactory()
     {
         $this->app->singleton('sm.factory', function () {
             return new Factory(
                 $this->app['config']['state-machine'],
-                new EventDispatcher(),
+                $this->app->make('sm.event.dispatcher'),
                 $this->app->make('sm.callback.factory')
             );
         });
@@ -94,8 +106,9 @@ class ServiceProvider extends BaseServiceProvider
     public function provides()
     {
         return [
-            'sm.factory',
             'sm.callback.factory',
+            'sm.event.dispatcher',
+            'sm.factory',
             Debug::class,
         ];
     }

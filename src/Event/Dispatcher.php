@@ -2,10 +2,10 @@
 
 namespace Sebdesign\SM\Event;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
 class Dispatcher implements EventDispatcherInterface
 {
@@ -28,7 +28,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function dispatch($eventName, Event $event = null)
     {
@@ -42,7 +42,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addListener($eventName, $listener, $priority = 0)
     {
@@ -52,7 +52,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
@@ -70,7 +70,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function removeListener($eventName, $listener)
     {
@@ -86,7 +86,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function removeSubscriber(EventSubscriberInterface $subscriber)
     {
@@ -102,7 +102,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getListeners($eventName = null)
     {
@@ -120,7 +120,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getListenerPriority($eventName, $listener)
     {
@@ -128,7 +128,7 @@ class Dispatcher implements EventDispatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasListeners($eventName = null)
     {

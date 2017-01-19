@@ -2,16 +2,15 @@
 
 namespace Sebdesign\SM;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use SM\Factory\Factory;
 use Sebdesign\SM\Commands\Debug;
+use SM\Factory\FactoryInterface;
 use Sebdesign\SM\Event\Dispatcher;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
-use SM\Factory\Factory;
-use SM\Factory\FactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProvider extends BaseServiceProvider

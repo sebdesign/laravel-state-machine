@@ -31,186 +31,105 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_adds_a_listener()
     {
         // Arrange
 
-        $listenerA = function () {
-            return 'a';
-        };
-
-        $listenerB = function () {
-            return 'b';
-        };
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
         // Act
 
-        $dispatcher->addListener('foo', $listenerA);
-        $dispatcher->addListener('foo', $listenerB);
-
-        // Assert
-
-        $this->assertEquals([$listenerA, $listenerB], $dispatcher->getListeners('foo'));
+        $dispatcher->addListener('foo', function () {});
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_adds_a_subscriber()
     {
         // Arrange
 
-        $subscriber = new Subscriber();
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
         // Act
 
-        $dispatcher->addSubscriber($subscriber);
-
-        // Assert
-
-        $this->assertEquals([[$subscriber, 'fooListener']], $dispatcher->getListeners('foo'));
-        $this->assertEquals([[$subscriber, 'barListener']], $dispatcher->getListeners('bar'));
-        $this->assertEquals([[$subscriber, 'bazListener']], $dispatcher->getListeners('baz'));
+        $dispatcher->addSubscriber(new Subscriber());
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_removes_a_listener()
     {
         // Arrange
 
-        $listenerA = function () {
-            return 'a';
-        };
-
-        $listenerB = function () {
-            return 'b';
-        };
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
-        $dispatcher->addListener('foo', $listenerA);
-        $dispatcher->addListener('foo', $listenerB);
-
-        // Act
-
-        $dispatcher->removeListener('foo', $listenerA);
-
-        // Assert
-
-        $this->assertEquals([$listenerB], $dispatcher->getListeners('foo'));
+        $dispatcher->removeListener('foo', function () {});
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_removes_a_subscriber()
     {
         // Arrange
 
-        $subscriber = new Subscriber();
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
-
-        $dispatcher->addSubscriber($subscriber);
 
         // Act
 
-        $dispatcher->removeSubscriber($subscriber);
-
-        $this->assertEmpty($dispatcher->getListeners());
+        $dispatcher->removeSubscriber(new Subscriber());
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_gets_the_listeners()
     {
         // Arrange
 
-        $listenerA = function () {
-            return 'a';
-        };
-
-        $listenerB = function () {
-            return 'b';
-        };
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
-
-        $dispatcher->addListener('foo', $listenerA, 2);
-        $dispatcher->addListener('bar', $listenerB, 2);
 
         // Act
 
-        $allListeners = $dispatcher->getListeners();
-        $listenersA = $dispatcher->getListeners('foo');
-
-        // Assert
-
-        $this->assertEquals([$listenerA, $listenerB], $allListeners);
-        $this->assertEquals([$listenerA], $listenersA);
+        $dispatcher->getListeners();
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_gets_the_listener_priority()
     {
         // Arrange
 
-        $listenerA = function () {
-            return 'a';
-        };
-
-        $listenerB = function () {
-            return 'b';
-        };
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
-        $dispatcher->addListener('foo', $listenerA);
-        $dispatcher->addListener('foo', $listenerB);
 
         // Act
 
-        $priority = $dispatcher->getListenerPriority('foo', $listenerB);
-
-        // Assert
-
-        $this->assertEquals(1, $priority);
+        $dispatcher->getListenerPriority('foo', function () {});
     }
 
     /**
      * @test
+     * @expectedException Exception
      */
     public function it_checks_if_it_has_listeners()
     {
         // Arrange
 
-        $listener = function () {
-        };
-
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
         // Act
 
-        $hasNoListeners = $dispatcher->hasListeners();
-
-        $dispatcher->addListener('foo', $listener);
-        $fooHasListeners = $dispatcher->hasListeners('foo');
-        $hasListeners = $dispatcher->hasListeners();
-
-        // Assert
-
-        $this->assertFalse($hasNoListeners);
-        $this->assertTrue($fooHasListeners);
-        $this->assertTrue($hasListeners);
+        $dispatcher->hasListeners();
     }
 
     /**
@@ -220,11 +139,7 @@ class DispatcherTest extends TestCase
     {
         // Arrange
 
-        $this->expectsEvents([
-            SMEvents::TEST_TRANSITION,
-            SMEvents::PRE_TRANSITION,
-            SMEvents::POST_TRANSITION,
-        ]);
+        \Event::fake();
 
         $this->app['config']->set('state-machine.graphA.class', Article::class);
         $article = new Article();
@@ -235,6 +150,12 @@ class DispatcherTest extends TestCase
         // Act
 
         $sm->can('create');
+
+        \Event::assertDispatched(SMEvents::TEST_TRANSITION);
+
         $sm->apply('create');
+
+        \Event::assertDispatched(SMEvents::PRE_TRANSITION);
+        \Event::assertDispatched(SMEvents::POST_TRANSITION);
     }
 }

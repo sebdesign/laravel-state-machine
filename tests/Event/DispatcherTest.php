@@ -41,7 +41,8 @@ class DispatcherTest extends TestCase
 
         // Act
 
-        $dispatcher->addListener('foo', function () {});
+        $dispatcher->addListener('foo', function () {
+        });
     }
 
     /**
@@ -69,7 +70,8 @@ class DispatcherTest extends TestCase
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
-        $dispatcher->removeListener('foo', function () {});
+        $dispatcher->removeListener('foo', function () {
+        });
     }
 
     /**
@@ -114,7 +116,8 @@ class DispatcherTest extends TestCase
 
         // Act
 
-        $dispatcher->getListenerPriority('foo', function () {});
+        $dispatcher->getListenerPriority('foo', function () {
+        });
     }
 
     /**

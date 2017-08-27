@@ -139,7 +139,11 @@ class DispatcherTest extends TestCase
     {
         // Arrange
 
-        \Event::fake();
+        $this->expectsEvents([
+            SMEvents::TEST_TRANSITION,
+            SMEvents::PRE_TRANSITION,
+            SMEvents::POST_TRANSITION,
+        ]);
 
         $this->app['config']->set('state-machine.graphA.class', Article::class);
         $article = new Article();
@@ -150,12 +154,6 @@ class DispatcherTest extends TestCase
         // Act
 
         $sm->can('create');
-
-        \Event::assertDispatched(SMEvents::TEST_TRANSITION);
-
         $sm->apply('create');
-
-        \Event::assertDispatched(SMEvents::PRE_TRANSITION);
-        \Event::assertDispatched(SMEvents::POST_TRANSITION);
     }
 }

@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^5.5.9 || ^7.0",
-        "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
+        "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.*",
         "winzou/state-machine": "^0.3.2"
     },
     "require-dev": {
@@ -42,5 +42,15 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sebdesign\\SM\\ServiceProvider"
+            ],
+            "aliases": {
+                "StateMachine": "Sebdesign\\SM\\Facade"
+            }
+        }
     }
 }

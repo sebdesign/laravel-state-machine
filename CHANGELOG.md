@@ -2,6 +2,10 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.2.1 - 2017-08-27
+
+- Support package auto-discovery
+
 ## 1.2.0 - 2017-08-27
 
 - Simplify event dispatcher implementation

@@ -16,7 +16,7 @@ You can install the package via composer. This package requires Laravel 5.1 or h
 composer require sebdesign/laravel-state-machine
 ```
 
-Add the service provider and the facade in `config/app.php`.
+Laravel 5.5 uses package auto-discovery, so doesn't require you to manually add the ServiceProvider and the facade. If you don't use auto-discovery or you are using an older version, add the service provider and the facade in config/app.php.
 
 ``` php
 <?php

@@ -2,7 +2,6 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
-use SM\SMException;
 use Sebdesign\SM\Test\TestCase;
 use SM\Callback\CallbackFactoryInterface;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
@@ -36,13 +35,13 @@ class ContainerAwareCallbackFactoryTest extends TestCase
 
     /**
      * @test
+     * @expectedException SM\SMException
      */
     public function it_throws_an_exception_on_invalid_specs()
     {
         // Arrange
 
         $factory = new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
-        $this->setExpectedException(SMException::class);
 
         // Act
 

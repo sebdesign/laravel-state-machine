@@ -2,6 +2,10 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.2.2 - 2017-08-30
+
+- Update tests for Laravel 5.5
+
 ## 1.2.1 - 2017-08-27
 
 - Support package auto-discovery

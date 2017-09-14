@@ -1,22 +1,19 @@
 <?php
 
-namespace SM\Services;
+namespace Sebdesign\SM\Services;
 
 use SM\Event\TransitionEvent;
 
-class StateHistroyManager
+class StateHistoryManager
 {
     public function storeHistory(TransitionEvent $event)
     {
         $sm = $event->getStateMachine();
         $model = $sm->getObject();
 
-        $model->history()->create([
+        $model->addHistoryLine([
             "transition" => $event->getTransition(),
-            "to" => $sm->getState(),
-            "user_id" => auth()->id()
+            "to" => $sm->getState()
         ]);
-
-        $model->save();
     }
 }

@@ -191,7 +191,7 @@ return [
         ],
         'callbacks' => [
             'history' => [
-                'do' => 'SM\Services\StateHistoryManager@storeHistory'
+                'do' => 'Sebdesign\SM\Services\StateHistoryManager@storeHistory'
             ]
         ]
     ]
@@ -204,6 +204,7 @@ Now you have to edit the `Post` model:
 namespace App;
 
 use \Illuminate\Database\Eloquent\Model;
+use \Sebdesign\SM\Traits\Statable;
 
 class Post extends Model
 {
@@ -222,14 +223,14 @@ NOTE: If you want to use `Statable` on non-eloquent entity, the setup would look
 ```php
 namespace App;
 
-use SM\Traits\Statable;
+use \Sebdesign\SM\Traits\Statable;
 
 class SomeEntity
 {
     use Statable;
 
     const HISTORY_MODEL = [
-        'name' => 'App\SomeEntityState' // the related model to store the history
+        'name' => 'App\SomeEntityState', // the related model to store the history
         'foreign_key' => 'entity_id' // field name identifying your entity in the history table
     ];
     const SM_CONFIG = 'entity'; // the SM graph to use

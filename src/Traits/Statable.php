@@ -1,6 +1,6 @@
 <?php
 
-namespace SM\Traits;
+namespace Sebdesign\SM\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use SM\Factory\FactoryInterface;
@@ -19,7 +19,7 @@ trait Statable
             return $this->hasMany(self::HISTORY_MODEL['name']);
         }
 
-        /** @var \Eloquent $model */
+        /** @var Model $model */
         $model = app(self::HISTORY_MODEL['name']);
 
         return $model->where(self::HISTORY_MODEL['foreign_key'], $this->{self::PRIMARY_KEY});
@@ -35,7 +35,7 @@ trait Statable
         }
 
         $transitionData[self::HISTORY_MODEL['foreign_key']] = $this->{self::PRIMARY_KEY};
-        /** @var \Eloquent $model */
+        /** @var Model $model */
         $model = app(self::HISTORY_MODEL['name']);
 
         return $model->create($transitionData);

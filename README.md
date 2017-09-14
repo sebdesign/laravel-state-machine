@@ -150,7 +150,7 @@ protected $listen = [
 
 The `Statable` trait provides drop-in functionality to manage state and state history of an existing entity. The entity can be either an Eloquent Model or any other object.
 
-#### Perquisites
+#### Prerequisites
 * Entity class with some property holding state (we use `last_state` in the example)
 * State history Eloquent Model with migrations [*](#migration)
 

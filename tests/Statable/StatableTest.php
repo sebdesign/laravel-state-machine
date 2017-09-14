@@ -11,7 +11,7 @@ class StatableTest extends TestCase
     /** @var  StatableArticle */
     public $article;
 
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
         $this->app['config']->set('state-machine.graphA.class', StatableArticle::class);

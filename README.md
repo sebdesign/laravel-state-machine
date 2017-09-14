@@ -146,6 +146,174 @@ protected $listen = [
 ];
 ```
 
+### Statable trait
+
+The `Statable` trait provides drop-in functionality to manage state and state history of an existing entity. The entity can be either an Eloquent Model or any other object.
+
+#### Perquisites
+* Entity class with some property holding state (we use `last_state` in the example)
+* State history Eloquent Model with migrations [*](#migration)
+
+#### Setup
+For this manual we will use a `Post` model as example.
+
+First you configure the SM graph. Open `config/state-machine.php` and define a new graph:
+```php
+return [
+    'post' => [
+        'class' => App\Post::class,
+        'graph' => 'post',
+
+        'property_path': 'last_state',
+
+        'states' => [
+            'draft',
+            'published',
+            'archived'
+        ],
+        'transitions' => [
+            'publish' => [
+                'from' => ['draft'],
+                'to' => 'published'
+            ],
+            'unpublish' => [
+                'from' => ['published'],
+                'to' => 'draft'
+            ],
+            'archive' => [
+                'from' => ['published'],
+                'to' => 'archived'
+            ],
+            'unarchive' => [
+                'from' => ['archived'],
+                'to' => 'published'
+            ]
+        ],
+        'callbacks' => [
+            'history' => [
+                'do' => 'SM\Services\StateHistoryManager@storeHistory'
+            ]
+        ]
+    ]
+]
+
+```
+
+Now you have to edit the `Post` model:
+```php
+namespace App;
+
+use \Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use Statable;
+
+    const HISTORY_MODEL = [
+        'name' => 'App\PostState' // the related model to store the history
+    ];
+    const SM_CONFIG = 'post'; // the SM graph to use
+}
+```
+
+And that's it!
+
+NOTE: If you want to use `Statable` on non-eloquent entity, the setup would look like this:
+```php
+namespace App;
+
+use SM\Traits\Statable;
+
+class SomeEntity
+{
+    use Statable;
+
+    const HISTORY_MODEL = [
+        'name' => 'App\SomeEntityState' // the related model to store the history
+        'foreign_key' => 'entity_id' // field name identifying your entity in the history table
+    ];
+    const SM_CONFIG = 'entity'; // the SM graph to use
+
+    const PRIMARY_KEY = 'id'; // unique ID property of your entity
+}
+```
+
+#### Usage
+You can now access the following methods on your entity:
+```php
+$post = \App\Post::first();
+
+$post->stateIs(); // returns current state
+
+try {
+    $post->transition('publish'); // applies transition
+} catch (\SM\SMException $e) {
+    abort(500, $e->getMessage()); // if transition is not allowed, throws exception
+}
+
+$post->transitionAllowed('publish'); // return boolean
+
+$post->history()->get(); // returns PostState collection for the given Post
+
+$post->history()->where('user_id', \Auth::id())->get(); // you can query history as any Eloquent relation
+```
+
+NOTE: The history saves the currently autheticated user, when applying a transition. This makes sense in most cases, but you can define the `user_id` field `nullable` on the history table if you are not sure state transitions are always intiated by an authenticated user.
+
+#### <a name="migration">*</a> If you have trouble with the history Model
+
+You need to create an Eloquent Model to hold `Post` state history. Use the following command:
+```bash
+$ php artisan make:model PostState -m
+```
+This will create a Model class in `app/` and a migration in `database/migrations`. Open the migration and edit the schema:
+```php
+// database/migrations/yyyy_mm_dd_hhmmss_create_post_states_table.php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateOrderStatesTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('post_states', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('post_id');
+            $table->string('transition');
+            $table->string('to');
+            $table->integer('user_id'); // optionally ->nullable();
+            $table->timestamps();
+        });
+    }
+    public function down()
+    {
+        Schema::dropIfExists('post_states');
+    }
+}
+```
+Then open the model and add the relations:
+```php
+// app/OrderState.php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PostState extends Model
+{
+    protected $guarded = [];
+
+    public function post() {
+        return $this->belongsTo('App\Post');
+    }
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+}
+```
+
 ### Debug command
 
 An artisan command for debugging graphs is included. It accepts the name of the graph as an argument. If no arguments are passed, the graph name will be asked interactively.

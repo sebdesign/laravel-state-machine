@@ -2,14 +2,14 @@
 
 namespace Sebdesign\SM\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachine;
+use Illuminate\Database\Eloquent\Model;
 
 trait Statable
 {
     /**
-     * @var StateMachine $stateMachine
+     * @var StateMachine
      */
     protected $stateMachine;
 
@@ -31,6 +31,7 @@ trait Statable
 
         if ($this->isEloquent()) {
             $this->save();
+
             return $this->history()->create($transitionData);
         }
 
@@ -61,9 +62,10 @@ trait Statable
      */
     public function stateMachine()
     {
-        if (!$this->stateMachine) {
+        if (! $this->stateMachine) {
             $this->stateMachine = app(FactoryInterface::class)->get($this, self::SM_CONFIG);
         }
+
         return $this->stateMachine;
     }
 

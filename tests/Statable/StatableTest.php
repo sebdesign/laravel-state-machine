@@ -2,13 +2,13 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use Sebdesign\SM\Services\StateHistoryManager;
 use Sebdesign\SM\Test\TestCase;
 use SM\StateMachine\StateMachine;
+use Sebdesign\SM\Services\StateHistoryManager;
 
 class StatableTest extends TestCase
 {
-    /** @var  StatableArticle */
+    /** @var StatableArticle */
     public $article;
 
     public function setUp()
@@ -19,6 +19,7 @@ class StatableTest extends TestCase
 
         $this->article = new StatableArticle('new', 2);
     }
+
     /**
      * @test
      */
@@ -39,7 +40,7 @@ class StatableTest extends TestCase
             'article_id' => 2,
             'transition' => 'create',
             'to' => 'pending_review',
-            'user_id' => null
+            'user_id' => null,
         ]);
         $articleStateMock->shouldReceive('where');
 

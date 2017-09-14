@@ -12,8 +12,8 @@ class StateHistoryManager
         $model = $sm->getObject();
 
         $model->addHistoryLine([
-            "transition" => $event->getTransition(),
-            "to" => $sm->getState()
+            'transition' => $event->getTransition(),
+            'to' => $sm->getState(),
         ]);
     }
 }

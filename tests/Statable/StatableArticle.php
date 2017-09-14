@@ -2,20 +2,19 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use \Sebdesign\SM\Traits\Statable;
+use Sebdesign\SM\Traits\Statable;
 
 class StatableArticle
 {
     use Statable;
-    
+
     const HISTORY_MODEL = [
         'name' => 'Sebdesign\SM\Test\Statable\ArticleState',
-        'foreign_key' => 'article_id'
+        'foreign_key' => 'article_id',
     ];
     const SM_CONFIG = 'graphA'; // the SM graph to use
 
     const PRIMARY_KEY = 'id'; // unique ID property of your entity
-
 
     public $state;
 

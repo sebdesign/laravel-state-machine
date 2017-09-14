@@ -210,9 +210,7 @@ class Post extends Model
 {
     use Statable;
 
-    const HISTORY_MODEL = [
-        'name' => 'App\PostState' // the related model to store the history
-    ];
+    const HISTORY_MODEL_NAME = 'App\PostState'; // the related model to store the history
     const SM_CONFIG = 'post'; // the SM graph to use
 }
 ```
@@ -229,10 +227,8 @@ class SomeEntity
 {
     use Statable;
 
-    const HISTORY_MODEL = [
-        'name' => 'App\SomeEntityState', // the related model to store the history
-        'foreign_key' => 'entity_id' // field name identifying your entity in the history table
-    ];
+    const HISTORY_MODEL_NAME = 'App\SomeEntityState'; // the related model to store the history
+    const HISTORY_MODEL_FOREIGN_KEY = 'entity_id'; // field name identifying your entity in the history table
     const SM_CONFIG = 'entity'; // the SM graph to use
 
     const PRIMARY_KEY = 'id'; // unique ID property of your entity

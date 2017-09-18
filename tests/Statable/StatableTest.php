@@ -23,17 +23,23 @@ class StatableTest extends TestCase
     /**
      * @test
      */
-    public function testInstantiateSM()
+    public function it_initiates_the_state_machine()
     {
         $this->assertInstanceOf(StateMachine::class, $this->article->stateMachine());
     }
 
-    public function testReturnCurrentState()
+    /**
+     * @test
+     */
+    public function it_returns_current_state()
     {
         $this->assertEquals('new', $this->article->stateIs());
     }
 
-    public function testTransition()
+    /**
+     * @test
+     */
+    public function it_applies_transition()
     {
         $articleStateMock = \Mockery::mock(ArticleState::class);
         $articleStateMock->shouldReceive('create')->once()->with([
@@ -53,13 +59,19 @@ class StatableTest extends TestCase
         $this->assertEquals('pending_review', $this->article->stateIs());
     }
 
-    public function testTransitionAllowed()
+    /**
+     * @test
+     */
+    public function it_tests_transition_applicable()
     {
         $this->assertTrue($this->article->transitionAllowed('create'));
         $this->assertFalse($this->article->transitionAllowed('approve'));
     }
 
-    public function testInvalidTransition()
+    /**
+     * @test
+     */
+    public function it_throws_exception_if_transition_not_applicable()
     {
         $this->expectException('SM\SMException');
 

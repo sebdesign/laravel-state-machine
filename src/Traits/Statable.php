@@ -16,13 +16,13 @@ trait Statable
     public function history()
     {
         if ($this->isEloquent()) {
-            return $this->hasMany(self::HISTORY_MODEL_NAME);
+            return $this->hasMany(self::HISTORY_MODEL['name']);
         }
 
         /** @var Model $model */
-        $model = app(self::HISTORY_MODEL_NAME);
+        $model = app(self::HISTORY_MODEL['name']);
 
-        return $model->where(self::HISTORY_MODEL_FOREIGN_KEY, $this->{self::PRIMARY_KEY});
+        return $model->where(self::HISTORY_MODEL['foreign_key'], $this->{self::PRIMARY_KEY});
     }
 
     public function addHistoryLine(array $transitionData)
@@ -35,9 +35,9 @@ trait Statable
             return $this->history()->create($transitionData);
         }
 
-        $transitionData[self::HISTORY_MODEL_FOREIGN_KEY] = $this->{self::PRIMARY_KEY};
+        $transitionData[self::HISTORY_MODEL['foreign_key']] = $this->{self::PRIMARY_KEY};
         /** @var Model $model */
-        $model = app(self::HISTORY_MODEL_NAME);
+        $model = app(self::HISTORY_MODEL['name']);
 
         return $model->create($transitionData);
     }

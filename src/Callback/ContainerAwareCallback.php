@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the StateMachine package.
- *
- * (c) Alexandre Bacco
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Sebdesign\SM\Callback;
 
 use SM\Callback\Callback;
@@ -35,32 +26,48 @@ class ContainerAwareCallback extends Callback
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function call(TransitionEvent $event)
     {
-        // Load the services only now (when the callback is actually called)
-
-        $this->callable = $this->filterCallable($this->callable, $event);
-
-        if ($this->isCallableWithAtSign()) {
-            $this->callable = explode('@', $this->callable);
+        if (isset($this->specs['args'])) {
+            return parent::call($event);
         }
 
-        if (is_array($this->callable) && is_string($this->callable[0])) {
-            $this->callable[0] = $this->container->make($this->callable[0]);
+        $callable = $this->filterCallable($this->callable, $event);
+
+        return BoundCallback::call($this->container, $callable, [
+            'event' => $event,
+            $event->getStateMachine()->getObject(),
+        ]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function filterCallable($callable, TransitionEvent $event)
+    {
+        if ($this->isCallableWithAtSign($callable)) {
+            $callable = explode('@', $callable);
         }
 
-        return parent::call($event);
+        $callable = parent::filterCallable($callable, $event);
+
+        if (is_array($callable) && is_string($callable[0])) {
+            return [$this->container->make($callable[0]), $callable[1]];
+        }
+
+        return $callable;
     }
 
     /**
      * Determine if the given string is in Class@method syntax.
      *
+     * @param  mixed  $callback
      * @return bool
      */
-    protected function isCallableWithAtSign()
+    protected function isCallableWithAtSign($callback)
     {
-        return is_string($this->callable) && strpos($this->callable, '@') !== false;
+        return is_string($callback) && strpos($callback, '@') !== false;
     }
 }

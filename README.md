@@ -6,7 +6,17 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sebdesign/laravel-state-machine/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
 [![StyleCI](https://styleci.io/repos/78893356/shield?style=flat-square)](https://styleci.io/repos/78893356)
 
-This is a Laravel service provider for [winzou/state-machine](https://github.com/winzou/state-machine). It provides dependency injection for the `StateMachineFactory`. You can also use Laravel's service container to resolve class methods for the callbacks. A facade is also available for convenience.
+This is a Laravel service provider for [winzou/state-machine](https://github.com/winzou/state-machine).
+
+## Features
+
+- It provides dependency injection for the `StateMachineFactory`.
+
+- You can use Laravel's service container to resolve class methods for the callbacks, along with their dependencies.
+
+- It allows you to listen for transition events using Laravel's event dispatcher.
+
+- A facade is also available for convenience.
 
 ## Installation
 
@@ -80,11 +90,87 @@ $stateMachine->apply('publish');
 
 ### Callbacks
 
-Callbacks are used to guard transitions or execute some code before or after applying transitions. This package adds the ability to use Laravel's service container to resolve callbacks.
+Callbacks are used to guard transitions or execute some code before or after applying transitions.
 
-E.g.:
+This package adds the ability to resolve callbacks and inject their dependencies from Laravel's Service Container.
 
-You want to call the `handle` method on the `MyService` class to determine if the state machine can apply the `submit_changes` transition.
+#### Defining a callback
+
+Under the `callbacks.guard` array of your configuration, add an associative array to define the callback. The key of the array can be anything you want (e.g. `guard_on_submitting`). This array must have a clause, a callback, and may have some arguments.
+
+##### Clause
+
+First, you need to specify a clause that will determine when the callback will be invoked. A clause has a key (`from`, `to`, `on`, `excluded_from`, `excluded_to`, `excluded_on`) and its value is the state or the transition that should satisfy the clause. 
+
+E.g. `'on' => 'submit_changes'` will be triggered when the transition `submit changes` is being checked or applied.
+
+##### Callback
+
+Second, you need to specify the callback that will be invoked under the `do` key. The callback must be a `callable`, and can be one of the following:
+
+###### A closure:
+```php
+'do' => function () {
+    // 
+},
+```
+###### A built-in or user-defined function as a string:
+```php
+`do` => 'abort',
+```
+###### A class method as array:
+Classes are resolved through the service container with their dependencies.
+```php
+'do' => ['MyService', 'handle'],
+```
+###### A class method as string:
+```php
+`do` => 'MyService@handle',
+```
+
+##### Arguments
+
+###### Using dependency injection
+
+By default, if you **don't** specify the `args` key in your array, all the callback method parameters will be injected automatically using Laravel's service container, like Route/Controller methods.
+
+**Type-hints**
+
+All type-hinted parameters are resolved from the container, e.g. `App $app`.
+
+**Object in the state machine**
+
+If a parameter has the same type-hint as the object that is associated to the state machine, e.g. `App\Article $article`, the instance will be injected.
+
+**State machine event**
+
+If a parameter has the state machine event type-hint, e.g. `SM\Event\TransitionEvent $e`, the event that was triggered in the state machine will be injected. Alternatively you can define a parameter named `$event` without a type-hint.
+
+###### Using ExpressionLanguage notation
+
+Otherwise, you can define one or multiple arguments that will be passed explicitly to your callbacks in the given order, by using the `args` key. This package is using Symfony's [ExpressionLanguage](https://symfony.com/doc/current/components/expression_language.html) notation to evaluate expressions.
+
+Here are some examples:
+```php
+<?php
+
+// The callback won't be passed any argument
+'args' => [],
+
+// You can pass strings and arrays as JSON-like strings.
+'args' => ['"approved"', '["foo", "bar"]', '{"foo": "bar"}'],
+
+// The callback will receive the object that is associated with the state machine,
+// e.g. the `$article`.
+'args' => ['object'],
+
+// The callback will receive the `SM\Event\TransitionEvent` instance.
+'args' => ['event'],
+```
+
+#### Example
+
+You want to call the `handle` method on the `MyService` class to determine if the state machine can apply the `submit_changes` transition. The handle method will receive the object of the state machine as the first argument, and the transition event as the second argument.
 
 ```php
 <?php
@@ -100,13 +186,11 @@ You want to call the `handle` method on the `MyService` class to determine if th
             'do' => ['MyService', 'handle'],
 
             // arguments for the callback
-            'args' => ['object'],
+            'args' => ['object', 'event'],
         ],
     ],
 ],
 ```
-
-You can specify callbacks in array format, e.g. `['Class', 'method']`, or in *@* delimited string format, e.g. `Class@method`.
 
 ### Events
 

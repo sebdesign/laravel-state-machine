@@ -8,7 +8,7 @@ use SM\Event\TransitionEvent;
 class BoundCallback extends BoundMethod
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static function addDependencyForCallParameter($container, $parameter,
                                                             array &$parameters, &$dependencies)

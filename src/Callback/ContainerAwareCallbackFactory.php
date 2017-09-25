@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Callback;
 
-use SM\SMException;
-use SM\Callback\CallbackFactory;
 use Illuminate\Contracts\Container\Container;
+use SM\Callback\CallbackFactory;
+use SM\SMException;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
 {

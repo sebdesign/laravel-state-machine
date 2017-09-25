@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Callback;
 
+use Illuminate\Contracts\Container\Container;
 use SM\Callback\Callback;
 use SM\Event\TransitionEvent;
-use Illuminate\Contracts\Container\Container as ContainerInterface;
 
 class ContainerAwareCallback extends Callback
 {
@@ -18,7 +18,7 @@ class ContainerAwareCallback extends Callback
      * @param mixed                                     $callable   Closure, callable or string that will be called if specifications pass
      * @param \Illuminate\Contracts\Container\Container $container  The service container that will be used to resolve the callable
      */
-    public function __construct(array $specs, $callable, ContainerInterface $container)
+    public function __construct(array $specs, $callable, Container $container)
     {
         parent::__construct($specs, $callable);
 
@@ -26,7 +26,7 @@ class ContainerAwareCallback extends Callback
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function call(TransitionEvent $event)
     {
@@ -43,7 +43,7 @@ class ContainerAwareCallback extends Callback
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function filterCallable($callable, TransitionEvent $event)
     {

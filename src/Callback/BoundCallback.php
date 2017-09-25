@@ -3,7 +3,6 @@
 namespace Sebdesign\SM\Callback;
 
 use Illuminate\Container\BoundMethod;
-use SM\Event\TransitionEvent;
 
 class BoundCallback extends BoundMethod
 {

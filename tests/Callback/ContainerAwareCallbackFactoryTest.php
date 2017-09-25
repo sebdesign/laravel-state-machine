@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
-use Sebdesign\SM\Test\TestCase;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Sebdesign\SM\Test\TestCase;
 use SM\Callback\CallbackFactoryInterface;
 
 class ContainerAwareCallbackFactoryTest extends TestCase

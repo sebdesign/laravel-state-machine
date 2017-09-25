@@ -20,6 +20,7 @@ class BoundCallback extends BoundMethod
                 if ($parameter->getClass()->isInstance($value)) {
                     $dependencies[] = $value;
                     unset($parameters[$key]);
+
                     return;
                 }
             }

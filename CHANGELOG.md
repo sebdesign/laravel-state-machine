@@ -2,6 +2,10 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.2.3 - 2017-09-28
+
+- Don't merge default configuration
+
 ## 1.2.2 - 2017-08-30
 
 - Update tests for Laravel 5.5

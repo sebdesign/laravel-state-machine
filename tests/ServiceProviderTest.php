@@ -20,22 +20,9 @@ class ServiceProviderTest extends TestCase
     {
         // Assert
 
-        $path = $this->getConfigurationPath();
+        $path = key(ServiceProvider::pathsToPublish(null, 'config'));
 
         $this->assertFileExists($path);
-    }
-
-    /**
-     * @test
-     */
-    public function the_configuration_is_merged()
-    {
-        // Assert
-
-        // Load the configuration from the file
-        $config = require $this->getConfigurationPath();
-
-        $this->assertEquals($this->app['config']['state-machine'], $config);
     }
 
     /**

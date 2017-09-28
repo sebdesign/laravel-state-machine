@@ -33,7 +33,7 @@ class DebugTest extends TestCase
     {
         // Arrange
 
-        $config = $this->app['config']['state-machine'];
+        $config = $this->app['config']->get('state-machine', []);
 
         $command = \Mockery::spy('\Sebdesign\SM\Commands\Debug[choice]', [$config]);
 

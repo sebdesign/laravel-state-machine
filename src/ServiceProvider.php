@@ -39,8 +39,6 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/state-machine.php', 'state-machine');
-
         $this->registerCallbackFactory();
         $this->registerEventDispatcher();
         $this->registerFactory();
@@ -70,7 +68,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->singleton('sm.factory', function () {
             return new Factory(
-                $this->app['config']['state-machine'],
+                $this->app['config']->get('state-machine', []),
                 $this->app->make('sm.event.dispatcher'),
                 $this->app->make('sm.callback.factory')
             );
@@ -89,7 +87,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerCommands()
     {
         $this->app->bind(Debug::class, function () {
-            return new Debug($this->app['config']['state-machine']);
+            return new Debug($this->app['config']->get('state-machine', []));
         });
 
         $this->commands([

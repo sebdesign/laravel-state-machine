@@ -41,5 +41,10 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $config = $app['config']->get('state-machine', []);
+
+        $path = __DIR__.'/../config/state-machine.php';
+
+        $app['config']->set('state-machine', array_merge(require $path, $config));
     }
 }

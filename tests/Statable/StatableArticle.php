@@ -2,8 +2,8 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use Illuminate\Database\Eloquent\Model;
 use Sebdesign\SM\Traits\Statable;
+use Illuminate\Database\Eloquent\Model;
 
 class StatableArticle extends Model
 {
@@ -14,5 +14,4 @@ class StatableArticle extends Model
     protected $guarded = [];
 
     protected $SMConfig = 'graphA'; // the SM graph to use
-
 }

@@ -2,27 +2,17 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
+use Illuminate\Database\Eloquent\Model;
 use Sebdesign\SM\Traits\Statable;
 
-class StatableArticle
+class StatableArticle extends Model
 {
     use Statable;
 
-    const HISTORY_MODEL = [
-        'name' => 'Sebdesign\SM\Test\Statable\ArticleState',
-        'foreign_key' => 'article_id',
-    ];
-    const SM_CONFIG = 'graphA'; // the SM graph to use
+    protected $table = 'articles';
 
-    const PRIMARY_KEY = 'id'; // unique ID property of your entity
+    protected $guarded = [];
 
-    public $state;
+    protected $SMConfig = 'graphA'; // the SM graph to use
 
-    public $id;
-
-    public function __construct($state = 'new', $id = 1)
-    {
-        $this->state = $state;
-        $this->id = $id;
-    }
 }

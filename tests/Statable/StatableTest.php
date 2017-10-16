@@ -2,13 +2,15 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Sebdesign\SM\Test\TestCase;
 use SM\StateMachine\StateMachine;
 use Sebdesign\SM\Services\StateHistoryManager;
 
 class StatableTest extends TestCase
 {
-    /** @var StatableArticle */
+    /** @var Article */
     public $article;
 
     public function setUp()
@@ -17,7 +19,10 @@ class StatableTest extends TestCase
         $this->app['config']->set('state-machine.graphA.class', StatableArticle::class);
         $this->app['config']->set('state-machine.graphA.callbacks.after.history.do', [StateHistoryManager::class, 'storeHistory']);
 
-        $this->article = new StatableArticle('new', 2);
+        $this->article = StatableArticle::firstOrCreate([
+            'title' => 'Test Article',
+            'state' => 'new'
+        ]);
     }
 
     /**
@@ -41,22 +46,25 @@ class StatableTest extends TestCase
      */
     public function it_applies_transition()
     {
-        $articleStateMock = \Mockery::mock(ArticleState::class);
-        $articleStateMock->shouldReceive('create')->once()->with([
-            'article_id' => 2,
-            'transition' => 'create',
-            'to' => 'pending_review',
-            'user_id' => null,
-        ]);
-        $articleStateMock->shouldReceive('where');
-
-        $this->app->bind(ArticleState::class, function () use ($articleStateMock) {
-            return $articleStateMock;
-        });
-
         $this->article->transition('create');
 
         $this->assertEquals('pending_review', $this->article->stateIs());
+
+        $this->assertEquals('create', $this->article->history()->first()->transition);
+    }
+
+    /**
+     * @test
+     */
+    public function it_saves_history_with_actor()
+    {
+        Auth::login(User::first());
+
+        $this->article->transition('create');
+
+        $this->assertEquals('create', $this->article->history()->first()->transition);
+
+        $this->assertEquals(Auth::id(), $this->article->history()->first()->actor_id);
     }
 
     /**

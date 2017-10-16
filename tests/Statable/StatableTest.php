@@ -2,10 +2,10 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Auth;
 use Sebdesign\SM\Test\TestCase;
 use SM\StateMachine\StateMachine;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Sebdesign\SM\Services\StateHistoryManager;
 
 class StatableTest extends TestCase
@@ -21,7 +21,7 @@ class StatableTest extends TestCase
 
         $this->article = StatableArticle::firstOrCreate([
             'title' => 'Test Article',
-            'state' => 'new'
+            'state' => 'new',
         ]);
     }
 

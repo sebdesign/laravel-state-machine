@@ -2,14 +2,12 @@
 
 namespace Sebdesign\SM\Traits;
 
-use Sebdesign\SM\Models\StateHistory;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachine;
+use Sebdesign\SM\Models\StateHistory;
 
 /**
- * Trait Statable
- *
- * @package Sebdesign\SM\Traits
+ * Trait Statable.
  */
 trait Statable
 {

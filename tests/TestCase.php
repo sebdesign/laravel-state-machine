@@ -2,10 +2,10 @@
 
 namespace Sebdesign\SM\Test;
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Foundation\Auth\User;
 use Sebdesign\SM\Facade;
 use Sebdesign\SM\ServiceProvider;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -16,6 +16,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->setUpDatabase($this->app);
     }
+
     /**
      * Get package providers.
      *

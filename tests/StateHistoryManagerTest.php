@@ -2,12 +2,9 @@
 
 namespace Sebdesign\SM\Test;
 
-use Illuminate\Database\Eloquent\Model;
 use Mockery;
-use Sebdesign\SM\Services\StateHistoryManager;
-use Sebdesign\SM\Test\Statable\StatableArticle;
 use SM\Event\TransitionEvent;
-use SM\StateMachine\StateMachine;
+use Sebdesign\SM\Services\StateHistoryManager;
 
 class StateHistoryManagerTest extends TestCase
 {
@@ -20,7 +17,7 @@ class StateHistoryManagerTest extends TestCase
         $model = Mockery::mock('model');
         $model->shouldReceive('addHistoryLine')->with([
             'transition' => 'foo',
-            'to' => 'bar'
+            'to' => 'bar',
         ]);
 
         $sm = Mockery::mock('sm');

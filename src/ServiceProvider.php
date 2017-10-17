@@ -32,6 +32,13 @@ class ServiceProvider extends BaseServiceProvider
                __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
            ], 'config');
         }
+
+        if (! class_exists('CreateStateHistoryTable')) {
+            $timestamp = date('Y_m_d_His', time());
+            $this->publishes([
+                __DIR__.'/../database/migrations/create_state_history_table.php.stub' => $this->app->databasePath()."/migrations/{$timestamp}_create_state_history_table.php",
+            ], 'migrations');
+        }
     }
 
     /**

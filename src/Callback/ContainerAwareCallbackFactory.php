@@ -1,19 +1,10 @@
 <?php
 
-/*
- * This file is part of the StateMachine package.
- *
- * (c) Alexandre Bacco
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Sebdesign\SM\Callback;
 
-use SM\SMException;
+use Illuminate\Contracts\Container\Container;
 use SM\Callback\CallbackFactory;
-use Illuminate\Contracts\Container\Container as ContainerInterface;
+use SM\SMException;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
 {
@@ -23,12 +14,12 @@ class ContainerAwareCallbackFactory extends CallbackFactory
     protected $container;
 
     /**
-     * @param string                                    $class     The CallbackFactory
+     * @param string                                    $class     The Callback class
      * @param \Illuminate\Contracts\Container\Container $container The service container that will be used to resolve the callable
      *
-     * @throws \SM\SMException if the CallbackFactory class does not exist
+     * @throws \SM\SMException if the Callback class does not exist
      */
-    public function __construct($class, ContainerInterface $container)
+    public function __construct($class, Container $container)
     {
         parent::__construct($class);
 

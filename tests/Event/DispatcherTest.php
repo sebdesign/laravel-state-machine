@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test\Event;
 
-use SM\Event\SMEvents;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
+use SM\Event\SMEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 class DispatcherTest extends TestCase

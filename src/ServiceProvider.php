@@ -2,15 +2,15 @@
 
 namespace Sebdesign\SM;
 
-use SM\Factory\Factory;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Sebdesign\SM\Commands\Debug;
-use SM\Factory\FactoryInterface;
 use Sebdesign\SM\Event\Dispatcher;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use SM\Factory\Factory;
+use SM\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProvider extends BaseServiceProvider
@@ -46,8 +46,6 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/state-machine.php', 'state-machine');
-
         $this->registerCallbackFactory();
         $this->registerEventDispatcher();
         $this->registerFactory();
@@ -77,7 +75,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->singleton('sm.factory', function () {
             return new Factory(
-                $this->app['config']['state-machine'],
+                $this->app['config']->get('state-machine', []),
                 $this->app->make('sm.event.dispatcher'),
                 $this->app->make('sm.callback.factory')
             );
@@ -96,7 +94,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerCommands()
     {
         $this->app->bind(Debug::class, function () {
-            return new Debug($this->app['config']['state-machine']);
+            return new Debug($this->app['config']->get('state-machine', []));
         });
 
         $this->commands([

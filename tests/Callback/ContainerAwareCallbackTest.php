@@ -2,12 +2,13 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
+use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\Service;
 use Sebdesign\SM\Test\TestCase;
-use SM\Factory\FactoryInterface;
 use SM\Callback\CallbackInterface;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
+use SM\Event\TransitionEvent;
+use SM\Factory\FactoryInterface;
 
 class ContainerAwareCallbackTest extends TestCase
 {
@@ -50,9 +51,8 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $this->app->singleton(Service::class, new Service());
         $service = \Mockery::spy(Service::class);
-        $this->app->instance(Service::class, $service);
+        $this->instance(Service::class, $service);
 
         // Act
 
@@ -78,9 +78,8 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $this->app->singleton(Service::class, new Service());
         $service = \Mockery::spy(Service::class);
-        $this->app->instance(Service::class, $service);
+        $this->instance(Service::class, $service);
 
         // Act
 
@@ -90,5 +89,46 @@ class ContainerAwareCallbackTest extends TestCase
         // Assert
 
         $service->shouldHaveReceived('guardOnSubmitting')->once()->with($article);
+    }
+
+    /**
+     * @test
+     */
+    public function it_injects_the_callback_dependencies()
+    {
+        // Arrange
+
+        $callable = [Service::class, 'guardOnApproving'];
+
+        $this->app['config']->set('state-machine.graphA.class', Article::class);
+        $this->app['config']->set('state-machine.graphA.callbacks.guard.guard_on_approving', [
+            'on' => 'approve',
+            'do' => [Service::class, 'guardOnApproving'],
+        ]);
+
+        $article = new Article('pending_review');
+
+        $service = \Mockery::spy(Service::class);
+        $this->instance(Service::class, $service);
+
+        // Act
+
+        $sm = $this->app[FactoryInterface::class]->get($article, 'graphA');
+        $sm->can('approve');
+
+        // Assert
+
+        $service->shouldHaveReceived('guardOnApproving')
+            ->once()
+            ->with(
+                $article,
+                \Mockery::on(function ($event) {
+                    return $event instanceof TransitionEvent
+                        && $event->getTransition() == 'approve'
+                        && $event->getState() == 'pending_review';
+                }),
+                $this->app,
+                true
+            );
     }
 }

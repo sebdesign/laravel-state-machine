@@ -2,13 +2,13 @@
 
 namespace Sebdesign\SM\Test;
 
-use Sebdesign\SM\Commands\Debug;
-use SM\Factory\FactoryInterface;
-use Sebdesign\SM\ServiceProvider;
-use SM\Callback\CascadeTransitionCallback;
-use SM\StateMachine\StateMachineInterface;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Sebdesign\SM\Commands\Debug;
+use Sebdesign\SM\ServiceProvider;
+use SM\Callback\CascadeTransitionCallback;
+use SM\Factory\FactoryInterface;
+use SM\StateMachine\StateMachineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProviderTest extends TestCase
@@ -20,22 +20,9 @@ class ServiceProviderTest extends TestCase
     {
         // Assert
 
-        $path = $this->getConfigurationPath();
+        $path = key(ServiceProvider::pathsToPublish(null, 'config'));
 
         $this->assertFileExists($path);
-    }
-
-    /**
-     * @test
-     */
-    public function the_configuration_is_merged()
-    {
-        // Assert
-
-        // Load the configuration from the file
-        $config = require $this->getConfigurationPath();
-
-        $this->assertEquals($this->app['config']['state-machine'], $config);
     }
 
     /**

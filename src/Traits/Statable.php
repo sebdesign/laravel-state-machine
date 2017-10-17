@@ -82,6 +82,7 @@ trait Statable
         if (! $this->SM) {
             $this->SM = app('sm.factory')->get($this, $this->getGraph());
         }
+
         return $this->SM;
     }
 

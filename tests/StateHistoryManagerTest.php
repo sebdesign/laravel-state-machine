@@ -32,5 +32,4 @@ class StateHistoryManagerTest extends TestCase
         $historyManager = app(StateHistoryManager::class);
         $historyManager->storeHistory($event);
     }
-    
 }

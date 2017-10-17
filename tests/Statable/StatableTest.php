@@ -10,7 +10,7 @@ use Sebdesign\SM\Services\StateHistoryManager;
 
 class StatableTest extends TestCase
 {
-    /** @var Article */
+    /** @var StatableArticle */
     public $article;
 
     public function setUp()
@@ -19,7 +19,7 @@ class StatableTest extends TestCase
         $this->app['config']->set('state-machine.graphA.class', StatableArticle::class);
         $this->app['config']->set('state-machine.graphA.callbacks.after.history.do', [StateHistoryManager::class, 'storeHistory']);
 
-        $this->article = StatableArticle::firstOrCreate([
+        $this->article = StatableArticle::firstOrNew([
             'title' => 'Test Article',
             'state' => 'new',
         ]);
@@ -50,7 +50,7 @@ class StatableTest extends TestCase
 
         $this->assertEquals('pending_review', $this->article->stateIs());
 
-        $this->assertEquals('create', $this->article->history()->first()->transition);
+        $this->assertEquals('create', $this->article->stateHistory()->first()->transition);
     }
 
     /**
@@ -62,9 +62,9 @@ class StatableTest extends TestCase
 
         $this->article->transition('create');
 
-        $this->assertEquals('create', $this->article->history()->first()->transition);
+        $this->assertEquals('create', $this->article->stateHistory()->first()->transition);
 
-        $this->assertEquals(Auth::id(), $this->article->history()->first()->actor_id);
+        $this->assertEquals(Auth::id(), $this->article->stateHistory()->first()->actor_id);
     }
 
     /**

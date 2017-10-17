@@ -17,6 +17,7 @@ class StateHistoryManagerTest extends TestCase
         $model = Mockery::mock('model');
         $model->shouldReceive('addHistoryLine')->with([
             'transition' => 'foo',
+            'from' => 'baz',
             'to' => 'bar',
         ]);
 
@@ -27,6 +28,7 @@ class StateHistoryManagerTest extends TestCase
         $event = Mockery::mock(TransitionEvent::class);
         $event->shouldReceive('getStateMachine')->andReturn($sm);
         $event->shouldReceive('getTransition')->andReturn('foo');
+        $event->shouldReceive('getState')->andReturn('baz');
 
         // Act
         $historyManager = app(StateHistoryManager::class);

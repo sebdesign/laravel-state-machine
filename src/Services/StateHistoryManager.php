@@ -13,6 +13,7 @@ class StateHistoryManager
 
         $model->addHistoryLine([
             'transition' => $event->getTransition(),
+            'from' => $event->getState(),
             'to' => $sm->getState(),
         ]);
     }

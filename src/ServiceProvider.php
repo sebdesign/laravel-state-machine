@@ -36,7 +36,7 @@ class ServiceProvider extends BaseServiceProvider
         if (! class_exists('CreateStateHistoryTable')) {
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                __DIR__.'/../database/migrations/create_state_history_table.php.stub' => $this->app->databasePath()."/migrations/{$timestamp}_create_state_history_table.php",
+                __DIR__.'/../database/migrations/create_state_history_table.php.stub' => $this->app->databasePath().'/migrations/'.date('Y_m_d_His', time()).'_create_state_history_table.php',
             ], 'migrations');
         }
     }

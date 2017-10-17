@@ -13,5 +13,8 @@ class StatableArticle extends Model
 
     protected $guarded = [];
 
-    protected $SMConfig = 'graphA'; // the SM graph to use
+    protected function getGraph()
+    {
+        return 'graphA';
+    }
 }

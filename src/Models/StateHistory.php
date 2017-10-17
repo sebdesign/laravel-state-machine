@@ -10,7 +10,7 @@ class StateHistory extends Model
 
     protected $guarded = [];
 
-    public function statble()
+    public function statable()
     {
         return $this->morphTo();
     }

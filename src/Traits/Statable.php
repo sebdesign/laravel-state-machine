@@ -4,8 +4,11 @@ namespace Sebdesign\SM\Traits;
 
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachine;
-use Illuminate\Database\Eloquent\Model;
+use Sebdesign\SM\Models\StateHistory;
 
+/**
+ * Trait Statable.
+ */
 trait Statable
 {
     /**
@@ -13,64 +16,72 @@ trait Statable
      */
     protected $stateMachine;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function history()
     {
-        if ($this->isEloquent()) {
-            return $this->hasMany(self::HISTORY_MODEL_NAME);
-        }
-
-        /** @var Model $model */
-        $model = app(self::HISTORY_MODEL_NAME);
-
-        return $model->where(self::HISTORY_MODEL_FOREIGN_KEY, $this->{self::PRIMARY_KEY});
+        return $this->morphMany(StateHistory::class, 'statable');
     }
 
+    /**
+     * @param array $transitionData
+     * @return $this|\Illuminate\Database\Eloquent\Model
+     */
     public function addHistoryLine(array $transitionData)
     {
-        $transitionData['user_id'] = auth()->id();
+        $transitionData['actor_id'] = $this->getActorId();
 
-        if ($this->isEloquent()) {
-            $this->save();
-
-            return $this->history()->create($transitionData);
-        }
-
-        $transitionData[self::HISTORY_MODEL_FOREIGN_KEY] = $this->{self::PRIMARY_KEY};
-        /** @var Model $model */
-        $model = app(self::HISTORY_MODEL_NAME);
-
-        return $model->create($transitionData);
+        return $this->history()->create($transitionData);
     }
 
+    /**
+     * @return int|null
+     */
+    public function getActorId()
+    {
+        return auth()->id();
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
     public function stateIs()
     {
         return $this->StateMachine()->getState();
     }
 
+    /**
+     * @param $transition
+     * @return bool
+     * @throws \SM\SMException|\Illuminate\Container\EntryNotFoundException
+     */
     public function transition($transition)
     {
         return $this->stateMachine()->apply($transition);
     }
 
+    /**
+     * @param $transition
+     * @return bool
+     * @throws \SM\SMException|\Illuminate\Container\EntryNotFoundException
+     */
     public function transitionAllowed($transition)
     {
         return $this->StateMachine()->can($transition);
     }
 
     /**
-     * @return StateMachine
+     * @return mixed|\SM\StateMachine\StateMachine
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function stateMachine()
     {
         if (! $this->stateMachine) {
-            $this->stateMachine = app(FactoryInterface::class)->get($this, self::SM_CONFIG);
+            $this->stateMachine = app(FactoryInterface::class)->get($this, $this->SMConfig);
         }
 
         return $this->stateMachine;
-    }
-
-    public function isEloquent()
-    {
-        return $this instanceof Model;
     }
 }

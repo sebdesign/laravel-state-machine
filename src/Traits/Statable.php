@@ -32,9 +32,17 @@ trait Statable
      */
     public function addHistoryLine(array $transitionData)
     {
-        $transitionData['actor_id'] = auth()->id();
+        $transitionData['actor_id'] = $this->getActorId();
 
         return $this->history()->create($transitionData);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getActorId()
+    {
+        return auth()->id();
     }
 
     /**

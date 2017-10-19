@@ -19,7 +19,7 @@ class StatableTest extends TestCase
         $this->app['config']->set('state-machine.graphA.class', StatableArticle::class);
         $this->app['config']->set('state-machine.graphA.callbacks.after.history.do', [StateHistoryManager::class, 'storeHistory']);
 
-        $this->article = StatableArticle::firstOrNew([
+        $this->article = StatableArticle::firstOrCreate([
             'title' => 'Test Article',
             'state' => 'new',
         ]);
@@ -65,6 +65,20 @@ class StatableTest extends TestCase
         $this->assertEquals('create', $this->article->stateHistory()->first()->transition);
 
         $this->assertEquals(Auth::id(), $this->article->stateHistory()->first()->actor_id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_fail_on_unsaved_model()
+    {
+        $article = new StatableArticle;
+        $article->title = 'Test Article';
+        $article->state = 'new';
+
+        $article->transition('create');
+
+        $this->assertEquals('pending_review', $article->state);
     }
 
     /**

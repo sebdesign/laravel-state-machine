@@ -6,6 +6,9 @@ use SM\Event\TransitionEvent;
 
 class StateHistoryManager
 {
+    /**
+     * @param \SM\Event\TransitionEvent $event
+     */
     public function storeHistory(TransitionEvent $event)
     {
         $sm = $event->getStateMachine();

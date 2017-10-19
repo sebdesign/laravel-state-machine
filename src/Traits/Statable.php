@@ -5,9 +5,6 @@ namespace Sebdesign\SM\Traits;
 use SM\StateMachine\StateMachine;
 use Sebdesign\SM\Models\StateHistory;
 
-/**
- * Trait Statable.
- */
 trait Statable
 {
     /**
@@ -25,15 +22,13 @@ trait Statable
 
     /**
      * @param array $transitionData
-     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function addHistoryLine(array $transitionData)
     {
-        $this->save();
-
-        $transitionData['actor_id'] = $this->getActorId();
-
-        return $this->stateHistory()->create($transitionData);
+        if ($this->id) {
+            $transitionData['actor_id'] = $this->getActorId();
+            $this->stateHistory()->create($transitionData);
+        }
     }
 
     /**

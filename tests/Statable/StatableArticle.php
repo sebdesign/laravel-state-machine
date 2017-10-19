@@ -13,6 +13,9 @@ class StatableArticle extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return string
+     */
     protected function getGraph()
     {
         return 'graphA';

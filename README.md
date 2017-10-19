@@ -295,7 +295,10 @@ class Post extends Model
 {
     use Statable;
 
-    protected $SMConfig = 'post'; // the SM graph to use
+    protected function getGraph()
+    {
+    	retrun 'graphName'; // the SM config to use
+	}
 }
 ```
 
@@ -306,7 +309,7 @@ You can now access the following methods on your entity:
 ```php
 $post = \App\Post::first();
 
-$post->stateIs(); // returns current state
+$post->last_state; // returns current state
 
 try {
     $post->transition('publish'); // applies transition

@@ -2,37 +2,33 @@
 
 namespace Sebdesign\SM\Traits;
 
-use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachine;
 use Sebdesign\SM\Models\StateHistory;
 
-/**
- * Trait Statable.
- */
 trait Statable
 {
     /**
      * @var StateMachine
      */
-    protected $stateMachine;
+    protected $SM;
 
     /**
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function history()
+    public function stateHistory()
     {
         return $this->morphMany(StateHistory::class, 'statable');
     }
 
     /**
      * @param array $transitionData
-     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function addHistoryLine(array $transitionData)
     {
-        $transitionData['actor_id'] = $this->getActorId();
-
-        return $this->history()->create($transitionData);
+        if ($this->id) {
+            $transitionData['actor_id'] = $this->getActorId();
+            $this->stateHistory()->create($transitionData);
+        }
     }
 
     /**
@@ -49,7 +45,7 @@ trait Statable
      */
     public function stateIs()
     {
-        return $this->StateMachine()->getState();
+        return $this->stateMachine()->getState();
     }
 
     /**
@@ -69,7 +65,7 @@ trait Statable
      */
     public function transitionAllowed($transition)
     {
-        return $this->StateMachine()->can($transition);
+        return $this->stateMachine()->can($transition);
     }
 
     /**
@@ -78,10 +74,18 @@ trait Statable
      */
     public function stateMachine()
     {
-        if (! $this->stateMachine) {
-            $this->stateMachine = app(FactoryInterface::class)->get($this, $this->SMConfig);
+        if (! $this->SM) {
+            $this->SM = app('sm.factory')->get($this, $this->getGraph());
         }
 
-        return $this->stateMachine;
+        return $this->SM;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getGraph()
+    {
+        return 'default';
     }
 }

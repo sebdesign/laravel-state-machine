@@ -10,7 +10,7 @@ use Sebdesign\SM\Services\StateHistoryManager;
 
 class StatableTest extends TestCase
 {
-    /** @var Article */
+    /** @var StatableArticle */
     public $article;
 
     public function setUp()
@@ -50,7 +50,7 @@ class StatableTest extends TestCase
 
         $this->assertEquals('pending_review', $this->article->stateIs());
 
-        $this->assertEquals('create', $this->article->history()->first()->transition);
+        $this->assertEquals('create', $this->article->stateHistory()->first()->transition);
     }
 
     /**
@@ -62,9 +62,23 @@ class StatableTest extends TestCase
 
         $this->article->transition('create');
 
-        $this->assertEquals('create', $this->article->history()->first()->transition);
+        $this->assertEquals('create', $this->article->stateHistory()->first()->transition);
 
-        $this->assertEquals(Auth::id(), $this->article->history()->first()->actor_id);
+        $this->assertEquals(Auth::id(), $this->article->stateHistory()->first()->actor_id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_fail_on_unsaved_model()
+    {
+        $article = new StatableArticle;
+        $article->title = 'Test Article';
+        $article->state = 'new';
+
+        $article->transition('create');
+
+        $this->assertEquals('pending_review', $article->state);
     }
 
     /**

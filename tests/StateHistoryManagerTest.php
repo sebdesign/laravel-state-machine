@@ -3,8 +3,8 @@
 namespace Sebdesign\SM\Test;
 
 use Mockery;
-use SM\Event\TransitionEvent;
 use Sebdesign\SM\Services\StateHistoryManager;
+use SM\Event\TransitionEvent;
 
 class StateHistoryManagerTest extends TestCase
 {

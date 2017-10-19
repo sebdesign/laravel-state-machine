@@ -2,7 +2,6 @@
 
 namespace Sebdesign\SM\Test;
 
-
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\User;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -51,7 +50,6 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-      
         $config = $app['config']->get('state-machine', []);
 
         $path = __DIR__.'/../config/state-machine.php';

@@ -2,8 +2,8 @@
 
 namespace Sebdesign\SM\Traits;
 
-use SM\StateMachine\StateMachine;
 use Sebdesign\SM\Models\StateHistory;
+use SM\StateMachine\StateMachine;
 
 trait Statable
 {

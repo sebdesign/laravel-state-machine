@@ -2,8 +2,8 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use Sebdesign\SM\Traits\Statable;
 use Illuminate\Database\Eloquent\Model;
+use Sebdesign\SM\Traits\Statable;
 
 class StatableArticle extends Model
 {

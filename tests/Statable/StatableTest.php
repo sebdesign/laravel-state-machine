@@ -2,11 +2,11 @@
 
 namespace Sebdesign\SM\Test\Statable;
 
-use Sebdesign\SM\Test\TestCase;
-use SM\StateMachine\StateMachine;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Sebdesign\SM\Services\StateHistoryManager;
+use Sebdesign\SM\Test\TestCase;
+use SM\StateMachine\StateMachine;
 
 class StatableTest extends TestCase
 {

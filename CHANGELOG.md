@@ -2,6 +2,10 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.2.4 - 2018-02-17
+
+- Add support for Laravel 5.6
+
 ## 1.2.3 - 2017-09-28
 
 - Don't merge default configuration

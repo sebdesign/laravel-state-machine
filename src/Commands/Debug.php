@@ -19,7 +19,7 @@ class Debug extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Show states and transitions of state machine graphs';
 
     protected $config;
 

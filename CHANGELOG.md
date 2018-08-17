@@ -2,6 +2,12 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## [Unreleased]
+
+- Resolve callback dependencies using method injection
+- Display graph callbacks in debug command
+- Add support for Lumen
+
 ## 1.2.4 - 2018-02-17
 
 - Add support for Laravel 5.6

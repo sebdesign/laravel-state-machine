@@ -146,7 +146,7 @@ class Debug extends Command
                 ];
             }
 
-            $this->table([ucfirst($type). ' Callbacks', 'On', 'Do', 'Args'], $rows);
+            $this->table([ucfirst($type).' Callbacks', 'On', 'Do', 'Args'], $rows);
         }
     }
 

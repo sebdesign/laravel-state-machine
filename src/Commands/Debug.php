@@ -65,6 +65,10 @@ class Debug extends Command
         $this->printStates($config['states']);
         $this->printTransitions($config['transitions']);
 
+        if (isset($config['callbacks'])) {
+            $this->printCallbacks($config['callbacks']);
+        }
+
         return 0;
     }
 
@@ -122,5 +126,53 @@ class Debug extends Command
         }
 
         $this->table(['Transition', 'From(s)', 'To'], $rows);
+    }
+
+    /**
+     * Display the graph callbacks on a table.
+     *
+     * @param array $allCallbacks
+     */
+    protected function printCallbacks(array $allCallbacks)
+    {
+        foreach ($allCallbacks as $type => $callbacks) {
+            $rows = [];
+            foreach ($callbacks as $name => $callback) {
+                $rows[] = [
+                    $name,
+                    $this->formatClause($callback, 'on'),
+                    $this->formatCallable($callback['do']),
+                    $this->formatClause($callback, 'args'),
+                ];
+            }
+
+            $this->table([ucfirst($type). ' Callbacks', 'On', 'Do', 'Args'], $rows);
+        }
+    }
+
+    protected function formatClause(array $callback, $clause)
+    {
+        if (isset($callback[$clause])) {
+            return implode(PHP_EOL, (array) $callback[$clause]);
+        }
+    }
+
+    /**
+     * Format the callable.
+     *
+     * @param  callable $callable
+     * @return string
+     */
+    protected function formatCallable($callable)
+    {
+        if (is_array($callable)) {
+            return implode('@', $callable);
+        }
+
+        if ($callable instanceof \Closure) {
+            return 'Closure';
+        }
+
+        return $callable;
     }
 }

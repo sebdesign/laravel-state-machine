@@ -10,6 +10,7 @@ use SM\Callback\CascadeTransitionCallback;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Illuminate\Foundation\Console\Kernel;
 
 class ServiceProviderTest extends TestCase
 {
@@ -119,6 +120,8 @@ class ServiceProviderTest extends TestCase
         // Assert
 
         $this->assertInstanceOf(Debug::class, $command);
+
+        $this->assertArrayHasKey('winzou:state-machine:debug', $this->app[Kernel::class]->all());
     }
 
     /**

@@ -43,7 +43,9 @@ class Debug extends Command
     public function handle()
     {
         if (empty($this->config)) {
-            return $this->error('There are no state machines configured.');
+            $this->error('There are no state machines configured.');
+
+            return 1;
         }
 
         if (! $this->argument('graph')) {
@@ -53,13 +55,17 @@ class Debug extends Command
         $graph = $this->argument('graph');
 
         if (! array_key_exists($graph, $this->config)) {
-            return $this->error('The provided state machine graph is not configured.');
+            $this->error('The provided state machine graph is not configured.');
+
+            return 1;
         }
 
         $config = $this->config[$graph];
 
         $this->printStates($config['states']);
         $this->printTransitions($config['transitions']);
+
+        return 0;
     }
 
     /**

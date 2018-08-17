@@ -20,7 +20,7 @@ This is a Laravel service provider for [winzou/state-machine](https://github.com
 
 ## Installation
 
-You can install the package via composer. This package requires Laravel 5.1 or higher.
+You can install the package via composer. This package requires Laravel 5.1 or higher. It also supports Lumen 5.1 or higher.
 
 ``` bash
 composer require sebdesign/laravel-state-machine
@@ -40,6 +40,24 @@ Since version 5.5, Laravel uses package auto-discovery, so you don't need to man
 ],
 ```
 
+### Lumen Installation
+
+Register the service provider in `bootstrap/app.php`:
+
+```php
+<?php
+
+$app->register(\Sebdesign\SM\ServiceProvider::class);
+```
+
+If you want to use the `StateMachine` facade, uncomment `$app->withFacades()` in the same file and add the alias in the second parameter.
+
+```php
+<?php
+
+$app->withFacades(true, [Sebdesign\SM\Facade::class => 'StateMachine']);
+```
+
 ## Configuration
 
 Publish the config file in `config/state-machine.php`.
@@ -49,6 +67,14 @@ php artisan vendor:publish --provider="Sebdesign\SM\ServiceProvider"
 ```
 
 Please see the documentation of the [StateMachineBundle](https://github.com/winzou/StateMachineBundle) for all the available options.
+
+### Lumen configuration
+
+Create the configuration file in `config/state-machine.php`. For start, can copy the contents from this repository. The service provider will automatically configure Lumen to load this file.
+
+```bash
+cp vendor/sebdesign/laravel-state-machine/config/state-machine.php config/
+```
 
 ## Usage
 

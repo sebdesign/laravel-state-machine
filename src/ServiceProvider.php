@@ -2,7 +2,9 @@
 
 namespace Sebdesign\SM;
 
+use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Sebdesign\SM\Commands\Debug;
@@ -27,10 +29,18 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
+        if ($this->app instanceof LaravelApplication) {
+            if ($this->app->runningInConsole()) {
+                $this->publishes([
+                   __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
+               ], 'config');
+            }
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('state-machine');
+        }
+
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-               __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
-           ], 'config');
+            $this->commands([Debug::class]);
         }
     }
 
@@ -89,10 +99,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->bind(Debug::class, function () {
             return new Debug($this->app['config']->get('state-machine', []));
         });
-
-        $this->commands([
-            Debug::class,
-        ]);
     }
 
     /**

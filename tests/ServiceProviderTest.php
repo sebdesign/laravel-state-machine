@@ -11,6 +11,7 @@ use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Illuminate\Foundation\Console\Kernel;
+use Mockery;
 
 class ServiceProviderTest extends TestCase
 {
@@ -24,6 +25,26 @@ class ServiceProviderTest extends TestCase
         $path = key(ServiceProvider::pathsToPublish(null, 'config'));
 
         $this->assertFileExists($path);
+    }
+
+    /**
+     * @test
+     */
+    public function the_configuration_is_loaded_in_lumen()
+    {
+        // Arrange
+
+        $lumen = Mockery::spy('Laravel\Lumen\Application');
+        $lumen->shouldReceive('runningInConsole')->andReturn(true);
+
+        // Act
+
+        $provider = new ServiceProvider($lumen);
+        $provider->boot();
+
+        // Assert
+
+        $lumen->shouldHaveReceived('configure')->once()->with('state-machine');
     }
 
     /**

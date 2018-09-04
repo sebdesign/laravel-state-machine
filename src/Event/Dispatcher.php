@@ -36,7 +36,11 @@ class Dispatcher implements EventDispatcherInterface
             $event = new Event();
         }
 
-        $this->dispatcher->fire($eventName, $event);
+        if (method_exists($this->dispatcher, 'fire')) {
+            $this->dispatcher->fire($eventName, $event);
+        } else {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
 
         return $event;
     }

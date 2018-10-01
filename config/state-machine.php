@@ -61,6 +61,12 @@ return [
                     // arguments for the callback
                     'args' => ['object'],
                 ],
+                'guard_on_approving' => [
+                    // call the callback on a specific transition
+                    'on' => 'approve',
+                    // will check the ability on the gate or the class policy
+                    'can' => 'approve',
+                ],
             ],
 
             // will be called before applying a transition

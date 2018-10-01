@@ -108,7 +108,85 @@ You want to call the `handle` method on the `MyService` class to determine if th
 
 You can specify callbacks in array format, e.g. `['Class', 'method']`, or in *@* delimited string format, e.g. `Class@method`.
 
-### Events
+### Using Gates and Policies
+
+If you don't want to use custom classes/methods for guarding, you can use Laravel's authorization gates or policies for determining if a transition can be applied.
+
+Instead of specifying a `do` key, you must define a `can` key with the name of the ability you want to check. Since Laravel 5.5, you can also specify an array of abilities, and every one will be checked.
+
+By default, the object instance will be passed as an argument to the gate. You can also override the arguments by specifying them in the `args` key.
+
+#### Example using a gate:
+
+In this example, we have defined a gate which will accept the `$article` as and argument. You are not required to define this parameter in your gate if you don't need it.
+
+```php
+<?php
+
+use App\User;
+use App\Article;
+
+Gate::define('approve', function (User $user, Article $article) {
+    //
+});
+```
+
+```php
+<?php
+
+'callbacks' => [
+    'guard' => [
+        'guard_on_approving' => [
+            // call the gate on a specific transition
+            'on' => 'approve',
+            // will call Gate:allows('approve', $article)
+            'can' => 'approve',
+        ],
+    ],
+],
+```
+
+#### Example using a policy:
+
+Say you have created an `ArticlePolicy` policy for your `Article` model, which has an `approve` method.
+
+You should define `approve` in the `can` index. This will be the equivalent of calling `$user->can('approve', $article)`.
+
+You can also override the arguments that will be passed in the `approved` method, by specifying the `args` array. You **must** use `object` as the first argument in order for the policy class to be resolved. E.g.: `'args' => ['object', '"final_approval"']` would be the equivalent of calling `$user->can('approve', [$article, 'final_approval'])`.
+
+```php
+<?php
+
+namespace App\Policies;
+
+use App\User;
+use App\Article;
+
+class ArticlePolicy
+{
+    public function approve(User $user, Article $article)
+    {
+        //
+    }
+}
+```
+
+```php
+<?php
+
+'callbacks' => [
+    'guard' => [
+        'guard_on_approving' => [
+            // call the policy on a specific transition
+            'on' => 'approve',
+            // will call Gate:allows('approve', $article)
+            'can' => 'approve',
+        ],
+    ],
+],
+```
+
+## Events
 
 When checking if a transition can be applied, the `SM\Event\SMEvents::TEST_TRANSITION` event is fired.
 
@@ -146,7 +224,7 @@ protected $listen = [
 ];
 ```
 
-### Debug command
+## Debug command
 
 An artisan command for debugging graphs is included. It accepts the name of the graph as an argument. If no arguments are passed, the graph name will be asked interactively.
 

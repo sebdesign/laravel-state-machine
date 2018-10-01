@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Facade as BaseFacade;
 
 /**
  * @see \SM\Factory\Factory
+ *
+ * @method static \SM\StateMachine\StateMachineInterface get(object $object, string $graph = 'default')
  */
 class Facade extends BaseFacade
 {

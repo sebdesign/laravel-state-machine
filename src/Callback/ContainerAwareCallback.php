@@ -41,14 +41,21 @@ class ContainerAwareCallback extends Callback
     {
         // Load the services only now (when the callback is actually called)
 
-        $this->callable = $this->filterCallable($this->callable, $event);
-
+        // Resolve 'Class@method' callables
         if ($this->isCallableWithAtSign()) {
             $this->callable = explode('@', $this->callable);
         }
 
+        // Resolve ['Class', 'method'] callables from the container
         if (is_array($this->callable) && is_string($this->callable[0])) {
-            $this->callable[0] = $this->container->make($this->callable[0]);
+            $id = $this->callable[0];
+
+            // If the class has no bindings in the container, call method statically.
+            if (! $this->container->bound($id)) {
+                return parent::call($event);
+            }
+
+            $this->callable[0] = $this->container->make($id);
         }
 
         return parent::call($event);

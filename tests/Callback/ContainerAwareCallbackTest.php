@@ -91,4 +91,31 @@ class ContainerAwareCallbackTest extends TestCase
 
         $service->shouldHaveReceived('guardOnSubmitting')->once()->with($article);
     }
+
+    /**
+     * @test
+     */
+    public function it_calls_methods_statically()
+    {
+        // Arrange
+
+        $callable = ['Sebdesign\SM\Test\Service', 'guardApproval'];
+
+        $this->app['config']->set('state-machine.graphA.class', Article::class);
+        $this->app['config']->set('state-machine.graphA.callbacks.guard.guard_on_approving', [
+            'on' => 'approve',
+            'do' => $callable,
+        ]);
+
+        $article = new Article('pending_review');
+
+        // Act
+
+        $sm = $this->app[FactoryInterface::class]->get($article, 'graphA');
+        $result = $sm->can('approve');
+
+        // Assert
+
+        $this->assertTrue($result);
+    }
 }

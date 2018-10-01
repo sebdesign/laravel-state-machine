@@ -13,6 +13,8 @@ namespace Sebdesign\SM\Callback;
 
 use SM\SMException;
 use SM\Callback\CallbackFactory;
+use Sebdesign\SM\Callback\GateCallback;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
@@ -40,6 +42,10 @@ class ContainerAwareCallbackFactory extends CallbackFactory
      */
     public function get(array $specs)
     {
+        if (isset($specs['can'])) {
+            return new GateCallback($specs, $this->container->make(Gate::class));
+        }
+
         if (! isset($specs['do'])) {
             throw new SMException(sprintf(
                'CallbackFactory::get needs the index "do" to be able to build a callback, array %s given.',

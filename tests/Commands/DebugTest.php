@@ -80,6 +80,8 @@ class DebugTest extends TestCase
         $command->shouldHaveReceived(
             'error', ['There are no state machines configured.']
         )->once();
+
+        $this->withoutSuccessCode();
     }
 
     /**
@@ -102,5 +104,7 @@ class DebugTest extends TestCase
         $command->shouldHaveReceived(
             'error', ['The provided state machine graph is not configured.']
         )->once();
+
+        $this->withoutSuccessCode();
     }
 }

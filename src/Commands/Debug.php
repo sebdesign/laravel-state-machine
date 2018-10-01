@@ -19,7 +19,7 @@ class Debug extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Show states and transitions of state machine graphs';
 
     protected $config;
 
@@ -43,7 +43,9 @@ class Debug extends Command
     public function handle()
     {
         if (empty($this->config)) {
-            return $this->error('There are no state machines configured.');
+            $this->error('There are no state machines configured.');
+
+            return 1;
         }
 
         if (! $this->argument('graph')) {
@@ -53,13 +55,21 @@ class Debug extends Command
         $graph = $this->argument('graph');
 
         if (! array_key_exists($graph, $this->config)) {
-            return $this->error('The provided state machine graph is not configured.');
+            $this->error('The provided state machine graph is not configured.');
+
+            return 1;
         }
 
         $config = $this->config[$graph];
 
         $this->printStates($config['states']);
         $this->printTransitions($config['transitions']);
+
+        if (isset($config['callbacks'])) {
+            $this->printCallbacks($config['callbacks']);
+        }
+
+        return 0;
     }
 
     /**
@@ -108,7 +118,7 @@ class Debug extends Command
         $rows = [];
 
         foreach ($transitions as $name => $transition) {
-            $rows[] = [$name, implode("\n", $transition['from']), $transition['to']];
+            $rows[] = [$name, implode(PHP_EOL, $transition['from']), $transition['to']];
 
             if ($name !== $lastTransition) {
                 $rows[] = new TableSeparator();
@@ -116,5 +126,102 @@ class Debug extends Command
         }
 
         $this->table(['Transition', 'From(s)', 'To'], $rows);
+    }
+
+    /**
+     * Display the graph callbacks on a table.
+     *
+     * @param array $allCallbacks
+     */
+    protected function printCallbacks(array $allCallbacks)
+    {
+        foreach ($allCallbacks as $position => $callbacks) {
+            $rows = [];
+            foreach ($callbacks as $name => $specs) {
+                $rows[] = [
+                    $name,
+                    $this->formatSatisfies($specs),
+                    $this->formatCallable($specs),
+                    $this->formatClause($specs, 'args'),
+                ];
+            }
+
+            $this->table([ucfirst($position) . ' Callbacks', 'Satisfies', 'Do', 'Args'], $rows);
+        }
+    }
+
+    /**
+     * Format the clauses that satisfy the callback.
+     *
+     * @param  array $specs
+     * @return string
+     */
+    protected function formatSatisfies(array $specs)
+    {
+        $clauses = array_map(function ($clause) use ($specs) {
+            if ($result = $this->formatClause($specs, $clause)) {
+                return vsprintf('%s: %s', [
+                    ucfirst(str_replace('_', ' ', $clause)),
+                    $result,
+                ]);
+            }
+        }, ['from', 'excluded_from', 'on', 'excluded_on', 'to', 'excluded_to']);
+
+        return implode(PHP_EOL, array_filter($clauses));
+    }
+
+    /**
+     * Format the callback clause.
+     *
+     * @param  array  $specs
+     * @param  string $clause
+     * @return string
+     */
+    protected function formatClause(array $specs, $clause)
+    {
+        if (isset($specs[$clause])) {
+            return implode(', ', (array) $specs[$clause]);
+        }
+
+        return '';
+    }
+
+    /**
+     * Format the callable callable.
+     *
+     * @param  array  $specs
+     * @return string
+     */
+    protected function formatCallable(array $specs)
+    {
+        if (isset($specs['can'])) {
+            $callback = json_encode($specs['can']);
+
+            return "Gate::check({$callback})";
+        }
+
+        if (! isset($specs['do'])) {
+            return '';
+        }
+
+        $callback = $specs['do'];
+
+        if ($callback instanceof \Closure) {
+            return 'Closure';
+        }
+
+        if (is_string($callback)) {
+            if (strpos($callback, '@') !== false) {
+                $callback = explode('@', $callback);
+            } else {
+                return $callback.'()';
+            }
+        }
+
+        if (is_array($callback)) {
+            return implode('::', $callback).'()';
+        }
+
+        return $callback;
     }
 }

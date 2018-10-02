@@ -2,7 +2,6 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
-use SM\Event\TransitionEvent;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
 use SM\Factory\FactoryInterface;
@@ -10,7 +9,6 @@ use SM\Callback\CallbackInterface;
 use Illuminate\Support\Facades\Gate;
 use Sebdesign\SM\Test\ArticlePolicy;
 use Sebdesign\SM\Callback\GateCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class GateCallbackTest extends TestCase

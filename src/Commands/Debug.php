@@ -146,7 +146,7 @@ class Debug extends Command
                 ];
             }
 
-            $this->table([ucfirst($position) . ' Callbacks', 'Satisfies', 'Do', 'Args'], $rows);
+            $this->table([ucfirst($position).' Callbacks', 'Satisfies', 'Do', 'Args'], $rows);
         }
     }
 

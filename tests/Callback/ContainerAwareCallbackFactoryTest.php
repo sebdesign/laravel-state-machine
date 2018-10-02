@@ -5,7 +5,6 @@ namespace Sebdesign\SM\Test\Callback;
 use Sebdesign\SM\Test\TestCase;
 use Sebdesign\SM\Callback\GateCallback;
 use SM\Callback\CallbackFactoryInterface;
-use Illuminate\Contracts\Auth\Access\Gate;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 

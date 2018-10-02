@@ -13,7 +13,6 @@ namespace Sebdesign\SM\Callback;
 
 use SM\SMException;
 use SM\Callback\CallbackFactory;
-use Sebdesign\SM\Callback\GateCallback;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 

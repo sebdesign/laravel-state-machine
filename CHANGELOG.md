@@ -2,6 +2,16 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.3.0 - 2018-10-01
+
+### Added
+- Implemented authorization using Gates and Policies.
+- Display callbacks in the debug command.
+
+### Changed
+- Callback methods for classes that are not bound to the container are called statically.
+- Return exit codes for errors in the debug command.
+
 ## 1.2.5 - 2018-09-05
 
 - Add support for Laravel 5.7

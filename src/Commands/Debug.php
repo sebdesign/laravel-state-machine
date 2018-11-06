@@ -97,8 +97,20 @@ class Debug extends Command
      */
     protected function printStates(array $states)
     {
-        $this->table(['Configured States:'], array_map(function ($state) {
-            return [$state];
+        $this->table(['Configured States:', 'Metadata:'], array_map(function ($state) {
+            if (is_string($state)) {
+                return [$state, null];
+            }
+
+            if (isset($state['metadata'])) {
+                $metadata = implode(PHP_EOL, array_map(function ($value, $key) {
+                    return vsprintf('%s: %s', [$key, $value]);
+                }, $state['metadata'], array_keys($state['metadata'])));
+            } else {
+                $metadata = null;
+            }
+
+            return [$state['name'], $metadata];
         }, $states));
     }
 

@@ -2,6 +2,11 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## Unreleased
+
+### Added
+- Added a MetadataStore to fetch metadata from graphs, states and transitions.
+
 ## 1.3.0 - 2018-10-01
 
 ### Added

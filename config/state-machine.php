@@ -11,10 +11,20 @@ return [
         // property of your object holding the actual state (default is "state")
         'property_path' => 'state',
 
+        'metadata' => [
+            'title' => 'Graph A',
+        ],
+
         // list of all possible states
         'states' => [
-            'new',
-            'pending_review',
+            // a state as associative array
+            ['name' => 'new'],
+            // a state as associative array with metadata
+            [
+                'name' => 'pending_review',
+                'metadata' => ['title' => 'Pending Review'],
+            ],
+            // states as string
             'awaiting_changes',
             'accepted',
             'published',
@@ -30,6 +40,7 @@ return [
             'ask_for_changes' => [
                 'from' =>  ['pending_review', 'accepted'],
                 'to' => 'awaiting_changes',
+                'metadata' => ['title' => 'Ask for changes'],
             ],
             'cancel_changes' => [
                 'from' => ['awaiting_changes'],

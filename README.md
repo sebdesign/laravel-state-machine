@@ -280,6 +280,12 @@ $ php artisan winzou:state-machine:debug simple
 +----------------------+--------------+------------------------------+---------------+
 ```
 
+## Statable trait for Eloquent models
+
+If you want to interact with the state machine directly within your models, you can install the [laravel-statable](https://github.com/iben12/laravel-statable) package by [iben12](https://github.com/iben12).
+
+This package allows you to get the graph from the model, checking/applying transitions, as well as recording the state history in the database.
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

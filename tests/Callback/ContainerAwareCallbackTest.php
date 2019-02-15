@@ -50,7 +50,7 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $service = $this->app->instance(Service::class, \Mockery::spy(Service::class));
+        $this->app->instance(Service::class, $service = \Mockery::spy(Service::class));
 
         // Act
 
@@ -76,7 +76,7 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $service = $this->app->instance(Service::class, \Mockery::spy(Service::class));
+        $this->app->instance(Service::class, $service = \Mockery::spy(Service::class));
 
         // Act
 

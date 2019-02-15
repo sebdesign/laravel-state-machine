@@ -28,16 +28,12 @@ class GateCallbackTest extends TestCase
      */
     public function it_accepts_the_specs()
     {
-        $callback = new GateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
+        $callback = new TestGateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
 
-        $this->assertObjectHasAttribute('specs', $callback);
+        $specs = $callback->getSpecs();
 
-        $specs = $this->getObjectAttribute($callback, 'specs');
-
-        $this->assertArraySubset([
-            'can' => 'submit_changes',
-            'args' => ['object'],
-        ], $specs);
+        $this->assertEquals('submit_changes', $specs['can']);
+        $this->assertEquals(['object'], $specs['args']);
     }
 
     /**
@@ -45,9 +41,9 @@ class GateCallbackTest extends TestCase
      */
     public function it_accepts_the_gate()
     {
-        $callback = new GateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
+        $callback = new TestGateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
 
-        $this->assertAttributeEquals($this->app[GateContract::class], 'gate', $callback);
+        $this->assertEquals($this->app[GateContract::class], $callback->getGate());
     }
 
     /**
@@ -102,5 +98,18 @@ class GateCallbackTest extends TestCase
         // Assert
 
         $this->assertTrue($condition);
+    }
+}
+
+class TestGateCallback extends GateCallback
+{
+    public function getSpecs()
+    {
+        return $this->specs;
+    }
+
+    public function getGate()
+    {
+        return $this->gate;
     }
 }

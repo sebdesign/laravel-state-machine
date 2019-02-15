@@ -2,6 +2,10 @@
 
 All Notable changes to `laravel-state-machine` will be documented in this file
 
+## 1.3.1 - 2019-02-15
+
+- Add support for Laravel 5.8
+
 ## 1.3.0 - 2018-10-01
 
 ### Added

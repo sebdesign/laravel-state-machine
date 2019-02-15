@@ -28,12 +28,12 @@ class ContainerAwareCallbackTest extends TestCase
     {
         // Act
 
-        $callback = new ContainerAwareCallback([], function () {
+        $callback = new TestContainerAwareCallback([], function () {
         }, $this->app);
 
         // Assert
 
-        $this->assertAttributeEquals($this->app, 'container', $callback);
+        $this->assertEquals($this->app, $callback->getContainer());
     }
 
     /**
@@ -50,9 +50,7 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $this->app->singleton(Service::class, new Service());
-        $service = \Mockery::spy(Service::class);
-        $this->app->instance(Service::class, $service);
+        $service = $this->app->instance(Service::class, \Mockery::spy(Service::class));
 
         // Act
 
@@ -78,9 +76,7 @@ class ContainerAwareCallbackTest extends TestCase
 
         $article = new Article('awaiting_changes');
 
-        $this->app->singleton(Service::class, new Service());
-        $service = \Mockery::spy(Service::class);
-        $this->app->instance(Service::class, $service);
+        $service = $this->app->instance(Service::class, \Mockery::spy(Service::class));
 
         // Act
 
@@ -117,5 +113,13 @@ class ContainerAwareCallbackTest extends TestCase
         // Assert
 
         $this->assertTrue($result);
+    }
+}
+
+class TestContainerAwareCallback extends ContainerAwareCallback
+{
+    public function getContainer()
+    {
+        return $this->container;
     }
 }

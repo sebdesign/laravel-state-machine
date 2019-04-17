@@ -2,7 +2,6 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
-use SM\Event\TransitionEvent;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
 use SM\Factory\FactoryInterface;
@@ -10,7 +9,6 @@ use SM\Callback\CallbackInterface;
 use Illuminate\Support\Facades\Gate;
 use Sebdesign\SM\Test\ArticlePolicy;
 use Sebdesign\SM\Callback\GateCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class GateCallbackTest extends TestCase
@@ -30,16 +28,12 @@ class GateCallbackTest extends TestCase
      */
     public function it_accepts_the_specs()
     {
-        $callback = new GateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
+        $callback = new TestGateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
 
-        $this->assertObjectHasAttribute('specs', $callback);
+        $specs = $callback->getSpecs();
 
-        $specs = $this->getObjectAttribute($callback, 'specs');
-
-        $this->assertArraySubset([
-            'can' => 'submit_changes',
-            'args' => ['object'],
-        ], $specs);
+        $this->assertEquals('submit_changes', $specs['can']);
+        $this->assertEquals(['object'], $specs['args']);
     }
 
     /**
@@ -47,9 +41,9 @@ class GateCallbackTest extends TestCase
      */
     public function it_accepts_the_gate()
     {
-        $callback = new GateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
+        $callback = new TestGateCallback(['can' => 'submit_changes'], $this->app[GateContract::class]);
 
-        $this->assertAttributeEquals($this->app[GateContract::class], 'gate', $callback);
+        $this->assertEquals($this->app[GateContract::class], $callback->getGate());
     }
 
     /**
@@ -104,5 +98,18 @@ class GateCallbackTest extends TestCase
         // Assert
 
         $this->assertTrue($condition);
+    }
+}
+
+class TestGateCallback extends GateCallback
+{
+    public function getSpecs()
+    {
+        return $this->specs;
+    }
+
+    public function getGate()
+    {
+        return $this->gate;
     }
 }

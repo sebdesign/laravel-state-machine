@@ -5,7 +5,6 @@ namespace Sebdesign\SM\Test\Callback;
 use Sebdesign\SM\Test\TestCase;
 use Sebdesign\SM\Callback\GateCallback;
 use SM\Callback\CallbackFactoryInterface;
-use Illuminate\Contracts\Auth\Access\Gate;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 
@@ -28,11 +27,11 @@ class ContainerAwareCallbackFactoryTest extends TestCase
     {
         // Act
 
-        $factory = new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
+        $factory = new TestContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
 
         // Assert
 
-        $this->assertAttributeEquals($this->app, 'container', $factory);
+        $this->assertEquals($this->app, $factory->getContainer());
     }
 
     /**
@@ -66,5 +65,13 @@ class ContainerAwareCallbackFactoryTest extends TestCase
         // Assert
 
         $this->assertInstanceOf(GateCallback::class, $callback);
+    }
+}
+
+class TestContainerAwareCallbackFactory extends ContainerAwareCallbackFactory
+{
+    public function getContainer()
+    {
+        return $this->container;
     }
 }

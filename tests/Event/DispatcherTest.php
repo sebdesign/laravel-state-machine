@@ -16,7 +16,13 @@ class DispatcherTest extends TestCase
     {
         // Arrange
 
-        \Event::shouldReceive('fire')->with('foo', \Mockery::type(Event::class));
+        if (version_compare($this->app->version(), '5.8.0')) {
+            $method = 'dispatch';
+        } else {
+            $method = 'fire';
+        }
+
+        \Event::shouldReceive($method)->with('foo', \Mockery::type(Event::class));
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 

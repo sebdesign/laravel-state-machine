@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM;
 
-use SM\Factory\Factory;
 use Sebdesign\SM\Commands\Debug;
 use SM\Factory\FactoryInterface;
+use Sebdesign\SM\Factory\Factory;
 use Sebdesign\SM\Event\Dispatcher;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;

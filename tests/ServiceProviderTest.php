@@ -4,9 +4,11 @@ namespace Sebdesign\SM\Test;
 
 use Sebdesign\SM\Commands\Debug;
 use SM\Factory\FactoryInterface;
+use Sebdesign\SM\Factory\Factory;
 use Sebdesign\SM\ServiceProvider;
 use SM\Callback\CascadeTransitionCallback;
 use SM\StateMachine\StateMachineInterface;
+use Sebdesign\SM\StateMachine\StateMachine;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -104,7 +106,9 @@ class ServiceProviderTest extends TestCase
         // Assert
 
         $this->assertInstanceOf(FactoryInterface::class, $factory);
+        $this->assertInstanceOf(Factory::class, $factory);
         $this->assertInstanceOf(StateMachineInterface::class, $sm);
+        $this->assertInstanceOf(StateMachine::class, $sm);
     }
 
     /**

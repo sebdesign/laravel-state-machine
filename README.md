@@ -224,6 +224,137 @@ protected $listen = [
 ];
 ```
 
+## Metadata
+
+You can optinally store metadata in graphs, states and transitions.
+The metadata are stored in associative arrays, and can be anything you want.
+
+```php
+<?php
+
+return [
+    'graphA' => [
+        'class' => App\Article::class,
+
+        'metadata' => [
+            'title' => 'Article State Machine',
+        ],
+
+        'states' => [
+            [
+                'name' => 'pending_review',
+                'metadata' => ['title' => 'Pending Review'],
+            ],
+        ],
+
+        'transitions' => [
+            'ask_for_changes' => [
+                'from' => ['pending_review'],
+                'to' => 'accepted',
+                'metadata' => ['title' => 'Ask for changes'],
+            ],
+        ],
+    ],
+];
+```
+
+The state machine object offers many flexible ways to fetch metadata, either as associative arrays, either specific values by keys. You can also pass default values or closures in case the specified key doesn't exist.
+
+### Get metadata from the graph
+
+```php
+<?php
+
+$stateMachine = StateMachine::get($article);
+
+// ['title' => 'Article State Machine']
+$stateMachine->metadata('graph');
+$stateMachine->metadata()->graph();
+
+// 'Article State Machine'
+$stateMachine->metadata('title');
+
+// 'Article State Machine'
+$stateMachine->metadata('graph', 'title');
+$stateMachine->metadata()->graph('title');
+
+// null
+$stateMachine->metadata('graph', 'invalid');
+$stateMachine->metadata()->graph('invalid');
+
+// 'default'
+$stateMachine->metadata('graph', 'invalid', 'default');
+$stateMachine->metadata()->graph('invalid', 'default');
+```
+
+### Get metadata from a state
+
+```php
+
+$stateMachine = StateMachine::get($article);
+
+// ['title' => 'Pending Review']
+$stateMachine->metadata('state', 'pending_review');
+$stateMachine->metadata()->state('pending_review');
+
+// 'Pending Review'
+$stateMachine->metadata('state', 'pending_review', 'title');
+$stateMachine->metadata()->state('pending_review', 'title');
+
+// null
+$stateMachine->metadata('state', 'pending_review', 'invalid');
+$stateMachine->metadata()->state('pending_review', 'invalid');
+
+// 'default'
+$stateMachine->metadata('state', 'pending_review', 'invalid', 'default');
+$stateMachine->metadata()->state('pending_review', 'invalid', 'default');
+```
+
+### Get metadata from the current state
+
+```php
+<?php
+
+$article->state = 'pending_review';
+$stateMachine = StateMachine::get($article);
+
+// ['title' => 'Pending Review']
+$stateMachine->metadata('state');
+
+// 'Pending Review'
+$stateMachine->metadata('state', 'title');
+
+// null
+$stateMachine->metadata('state', 'invalid');
+
+// 'default'
+$stateMachine->metadata('state', 'invalid', 'default');
+```
+
+### Get metadata from a transition
+
+```php
+<?php
+
+$stateMachine = StateMachine::get($article);
+
+// ['title' => 'Ask for changes']
+$stateMachine->metadata('transition', 'ask_for_changes');
+$stateMachine->metadata()->transition('ask_for_changes');
+
+// 'Ask for changes'
+$stateMachine->metadata('transition', 'ask_for_changes', 'title');
+$stateMachine->metadata()->transition('ask_for_changes', 'title');
+
+// null
+$stateMachine->metadata('transition', 'ask_for_changes', 'invalid');
+$stateMachine->metadata()->transition('ask_for_changes', 'invalid');
+
+// 'default'
+$stateMachine->metadata('transition', 'ask_for_changes', 'invalid', 'default');
+$stateMachine->metadata()->transition('ask_for_changes', 'invalid', 'default');
+```
+
 ## Debug command
 
 An artisan command for debugging graphs is included. It accepts the name of the graph as an argument. If no arguments are passed, the graph name will be asked interactively.
@@ -231,16 +362,16 @@ An artisan command for debugging graphs is included. It accepts the name of the 
 ```bash
 $ php artisan winzou:state-machine:debug simple
 
-+--------------------+
-| Configured States: |
-+--------------------+
-| new                |
-| pending_review     |
-| awaiting_changes   |
-| accepted           |
-| published          |
-| rejected           |
-+--------------------+
++--------------------+-----------------------+
+| Configured States: | Metadata:             |
++--------------------+-----------------------+
+| new                |                       |
+| pending_review     | title: Pending Review |
+| awaiting_changes   |                       |
+| accepted           |                       |
+| published          |                       |
+| rejected           |                       |
++--------------------+-----------------------+
 
 +-----------------+------------------+------------------+
 | Transition      | From(s)          | To               |

@@ -3,7 +3,6 @@
 namespace Sebdesign\SM\StateMachine;
 
 use SM\SMException;
-use Illuminate\Support\Arr;
 use Sebdesign\SM\Metadata\MetadataStore;
 use SM\Callback\CallbackFactoryInterface;
 use Sebdesign\SM\Metadata\MetadataStoreInterface;
@@ -26,9 +25,9 @@ class StateMachine extends BaseStateMachine
     public function __construct(
         $object,
         array $config,
-        EventDispatcherInterface $dispatcher      = null,
+        EventDispatcherInterface $dispatcher = null,
         CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface   $metadataStore   = null
+        MetadataStoreInterface   $metadataStore = null
     ) {
         parent::__construct($object, $config, $dispatcher, $callbackFactory);
 

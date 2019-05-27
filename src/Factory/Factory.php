@@ -18,20 +18,21 @@ class Factory extends BaseFactory
 
     public function __construct(
         array $configs,
-        EventDispatcherInterface $dispatcher      = null,
+        EventDispatcherInterface $dispatcher = null,
         CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface   $metadataStore   = null
+        MetadataStoreInterface   $metadataStore = null
     ) {
         parent::__construct($configs, $dispatcher, $callbackFactory);
 
         $this->metadataStore = $metadataStore;
     }
+
     /**
-     * {@inheritcoc}
+     * {@inheritcoc}.
      */
     protected function createStateMachine($object, array $config)
     {
-        if (!isset($config['state_machine_class'])) {
+        if (! isset($config['state_machine_class'])) {
             $class = StateMachine::class;
         } elseif (class_exists($config['state_machine_class'])) {
             $class = $config['state_machine_class'];

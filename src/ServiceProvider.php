@@ -9,7 +9,9 @@ use Sebdesign\SM\Event\Dispatcher;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Callback\CascadeTransitionCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Laravel\Lumen\Application as LumenApplication;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -28,9 +30,13 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-               __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
-           ], 'config');
+            if ($this->app instanceof LaravelApplication) {
+                $this->publishes([
+                   __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
+               ], 'config');
+            } elseif ($this->app instanceof LumenApplication) {
+                $this->app->configure('state-machine');
+            }
         }
     }
 

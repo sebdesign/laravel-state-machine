@@ -97,7 +97,7 @@ trait ConsoleHelpers
      */
     protected function withoutExitCode($code)
     {
-        $this->assertNotEquals($code, $this->code, "Exit code shouldn\'t be {$code}.");
+        $this->assertNotEquals($code, $this->code, "Exit code shouldn't be {$code}.");
 
         return $this;
     }
@@ -105,7 +105,7 @@ trait ConsoleHelpers
     /**
      * Dump the output from the last command.
      *
-     * @return void
+     * @return $this
      */
     protected function dumpConsole()
     {

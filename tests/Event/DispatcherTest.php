@@ -2,9 +2,10 @@
 
 namespace Sebdesign\SM\Test\Event;
 
-use SM\Event\SMEvents;
+use Illuminate\Support\Facades\Event as EventFacade;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
+use SM\Event\SMEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 class DispatcherTest extends TestCase
@@ -22,7 +23,7 @@ class DispatcherTest extends TestCase
             $method = 'fire';
         }
 
-        \Event::shouldReceive($method)->with('foo', \Mockery::type(Event::class));
+        EventFacade::shouldReceive($method)->once()->with('foo', \Mockery::type(Event::class));
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 

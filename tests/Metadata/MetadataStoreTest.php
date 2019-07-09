@@ -1,6 +1,6 @@
 <?php
 
-namespace Sebdesign\Sm\Test\Metadata;
+namespace Sebdesign\SM\Test\Metadata;
 
 use SM\SMException;
 use Sebdesign\SM\Test\TestCase;

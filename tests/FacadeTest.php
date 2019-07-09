@@ -2,7 +2,7 @@
 
 namespace Sebdesign\SM\Test;
 
-use StateMachine;
+use Sebdesign\SM\Facade;
 
 class FacadeTest extends TestCase
 {
@@ -17,10 +17,10 @@ class FacadeTest extends TestCase
 
         $article = new Article();
 
-        StateMachine::shouldReceive('get')->with($article, 'graphA');
+        Facade::shouldReceive('get')->once()->with($article, 'graphA');
 
         // Act
 
-        StateMachine::get($article, 'graphA');
+        Facade::get($article, 'graphA');
     }
 }

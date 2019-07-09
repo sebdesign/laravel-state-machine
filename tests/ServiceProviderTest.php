@@ -22,6 +22,7 @@ class ServiceProviderTest extends TestCase
     {
         // Assert
 
+        /** @var string $path */
         $path = key(ServiceProvider::pathsToPublish(null, 'config'));
 
         $this->assertFileExists($path);

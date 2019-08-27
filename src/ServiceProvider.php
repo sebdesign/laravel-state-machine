@@ -64,7 +64,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerEventDispatcher()
     {
         $this->app->bind('sm.event.dispatcher', function () {
-            return new Dispatcher($this->app['events']);
+            return new Dispatcher($this->app->make('events'));
         });
 
         $this->app->alias('sm.event.dispatcher', EventDispatcherInterface::class);
@@ -74,7 +74,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->singleton('sm.factory', function () {
             return new Factory(
-                $this->app['config']->get('state-machine', []),
+                $this->app->make('config')->get('state-machine'),
                 $this->app->make('sm.event.dispatcher'),
                 $this->app->make('sm.callback.factory')
             );
@@ -93,7 +93,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerCommands()
     {
         $this->app->bind(Debug::class, function () {
-            return new Debug($this->app['config']->get('state-machine', []));
+            return new Debug($this->app->make('config')->get('state-machine', []));
         });
 
         $this->commands([

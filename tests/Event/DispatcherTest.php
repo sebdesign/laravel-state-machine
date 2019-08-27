@@ -2,6 +2,7 @@
 
 namespace Sebdesign\SM\Test\Event;
 
+use Exception;
 use Illuminate\Support\Facades\Event as EventFacade;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
@@ -17,13 +18,7 @@ class DispatcherTest extends TestCase
     {
         // Arrange
 
-        if (version_compare($this->app->version(), '5.8.0')) {
-            $method = 'dispatch';
-        } else {
-            $method = 'fire';
-        }
-
-        EventFacade::shouldReceive($method)->once()->with('foo', \Mockery::type(Event::class));
+        EventFacade::shouldReceive('dispatch')->once()->with('foo', \Mockery::type(Event::class));
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -38,11 +33,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_adds_a_listener()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -54,11 +50,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_adds_a_subscriber()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -69,11 +66,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_removes_a_listener()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -83,11 +81,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_removes_a_subscriber()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -98,11 +97,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_gets_the_listeners()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -113,11 +113,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_gets_the_listener_priority()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -129,11 +130,12 @@ class DispatcherTest extends TestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function it_checks_if_it_has_listeners()
     {
         // Arrange
+
+        $this->expectException(Exception::class);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
@@ -145,7 +147,7 @@ class DispatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_fires_transition_events()
+    public function it_dispatches_transition_events()
     {
         // Arrange
 

@@ -95,7 +95,7 @@ class ContainerAwareCallbackTest extends TestCase
     {
         // Arrange
 
-        $callable = ['Sebdesign\SM\Test\Service', 'guardApproval'];
+        $callable = [Service::class, 'guardApproval'];
 
         $this->app['config']->set('state-machine.graphA.class', Article::class);
         $this->app['config']->set('state-machine.graphA.callbacks.guard.guard_on_approving', [

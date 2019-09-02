@@ -2,11 +2,12 @@
 
 namespace Sebdesign\SM\Test\Factory;
 
-use SM\SMException;
-use Sebdesign\SM\Test\Article;
-use Sebdesign\SM\Test\TestCase;
+use ReflectionObject;
 use Sebdesign\SM\Factory\Factory;
 use Sebdesign\SM\StateMachine\StateMachine;
+use Sebdesign\SM\Test\Article;
+use Sebdesign\SM\Test\TestCase;
+use SM\SMException;
 use SM\StateMachine\StateMachine as BaseStateMachine;
 
 class FactoryTest extends TestCase
@@ -118,7 +119,11 @@ class FactoryTest extends TestCase
 
         // Assert
 
-        $configs = $this->getObjectAttribute($factory, 'configs');
+        $reflector = new ReflectionObject($factory);
+        $attribute = $reflector->getProperty('configs');
+        $attribute->setAccessible(true);
+        $configs = $attribute->getValue($factory);
+        $attribute->setAccessible(false);
 
         $this->assertEquals([
             ['name' => 'new'],

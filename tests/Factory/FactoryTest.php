@@ -113,6 +113,7 @@ class FactoryTest extends TestCase
             'class' => Article::class,
             'states' => [
                 'new',
+                42,
                 ['name' => 'pending_review'],
             ],
         ]);
@@ -127,6 +128,7 @@ class FactoryTest extends TestCase
 
         $this->assertEquals([
             ['name' => 'new'],
+            ['name' => 42],
             ['name' => 'pending_review'],
         ], $configs[0]['states']);
     }

@@ -73,7 +73,7 @@ class Factory extends BaseFactory
         $states = [];
 
         foreach ($config['states'] as $state) {
-            if (is_string($state)) {
+            if (is_scalar($state)) {
                 $state = ['name' => $state];
             }
 

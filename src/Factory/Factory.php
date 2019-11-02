@@ -2,11 +2,11 @@
 
 namespace Sebdesign\SM\Factory;
 
-use SM\SMException;
-use SM\Factory\Factory as BaseFactory;
-use SM\Callback\CallbackFactoryInterface;
-use Sebdesign\SM\StateMachine\StateMachine;
 use Sebdesign\SM\Metadata\MetadataStoreInterface;
+use Sebdesign\SM\StateMachine\StateMachine;
+use SM\Callback\CallbackFactoryInterface;
+use SM\Factory\Factory as BaseFactory;
+use SM\SMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Factory extends BaseFactory
@@ -20,7 +20,7 @@ class Factory extends BaseFactory
         array $configs,
         EventDispatcherInterface $dispatcher = null,
         CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface   $metadataStore = null
+        MetadataStoreInterface $metadataStore = null
     ) {
         parent::__construct($configs, $dispatcher, $callbackFactory);
 

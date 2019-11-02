@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test;
 
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use Sebdesign\SM\Facade;
 use Sebdesign\SM\ServiceProvider;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {

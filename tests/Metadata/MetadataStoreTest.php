@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test\Metadata;
 
-use SM\SMException;
-use Sebdesign\SM\Test\TestCase;
 use Sebdesign\SM\Metadata\MetadataStore;
+use Sebdesign\SM\Test\TestCase;
+use SM\SMException;
 
 class MetadataStoreTest extends TestCase
 {

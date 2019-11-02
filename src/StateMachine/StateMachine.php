@@ -2,13 +2,13 @@
 
 namespace Sebdesign\SM\StateMachine;
 
-use SM\SMException;
 use Sebdesign\SM\Metadata\MetadataStore;
-use SM\Callback\CallbackFactoryInterface;
 use Sebdesign\SM\Metadata\MetadataStoreInterface;
+use SM\Callback\CallbackFactoryInterface;
+use SM\SMException;
 use SM\StateMachine\StateMachine as BaseStateMachine;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class StateMachine extends BaseStateMachine
 {
@@ -27,7 +27,7 @@ class StateMachine extends BaseStateMachine
         array $config,
         EventDispatcherInterface $dispatcher = null,
         CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface   $metadataStore = null
+        MetadataStoreInterface $metadataStore = null
     ) {
         parent::__construct($object, $config, $dispatcher, $callbackFactory);
 

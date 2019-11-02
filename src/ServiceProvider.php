@@ -2,17 +2,17 @@
 
 namespace Sebdesign\SM;
 
-use Sebdesign\SM\Commands\Debug;
-use SM\Factory\FactoryInterface;
-use Sebdesign\SM\Factory\Factory;
-use Sebdesign\SM\Event\Dispatcher;
-use SM\Callback\CallbackFactoryInterface;
-use SM\Callback\CascadeTransitionCallback;
-use Sebdesign\SM\Callback\ContainerAwareCallback;
-use Laravel\Lumen\Application as LumenApplication;
-use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
+use Sebdesign\SM\Callback\ContainerAwareCallback;
+use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
+use Sebdesign\SM\Commands\Debug;
+use Sebdesign\SM\Event\Dispatcher;
+use Sebdesign\SM\Factory\Factory;
+use SM\Callback\CallbackFactoryInterface;
+use SM\Callback\CascadeTransitionCallback;
+use SM\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServiceProvider extends BaseServiceProvider

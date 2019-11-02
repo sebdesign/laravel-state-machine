@@ -11,10 +11,10 @@
 
 namespace Sebdesign\SM\Callback;
 
-use SM\SMException;
-use SM\Callback\CallbackFactory;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
+use SM\Callback\CallbackFactory;
+use SM\SMException;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
 {

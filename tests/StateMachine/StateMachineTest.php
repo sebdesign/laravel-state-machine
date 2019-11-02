@@ -2,11 +2,11 @@
 
 namespace Sebdesign\SM\Test\StateMachine;
 
-use SM\SMException;
-use Sebdesign\SM\Test\Article;
-use Sebdesign\SM\Test\TestCase;
 use Sebdesign\SM\Metadata\MetadataStore;
 use Sebdesign\SM\StateMachine\StateMachine;
+use Sebdesign\SM\Test\Article;
+use Sebdesign\SM\Test\TestCase;
+use SM\SMException;
 
 class StateMachineTest extends TestCase
 {

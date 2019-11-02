@@ -2,9 +2,9 @@
 
 namespace Sebdesign\SM\Test\Commands;
 
-use Sebdesign\SM\Test\TestCase;
-use Sebdesign\SM\Test\ConsoleHelpers;
 use Illuminate\Contracts\Console\Kernel;
+use Sebdesign\SM\Test\ConsoleHelpers;
+use Sebdesign\SM\Test\TestCase;
 
 class DebugTest extends TestCase
 {

@@ -3,11 +3,11 @@
 namespace Sebdesign\SM\Test\Event;
 
 use Exception;
-use SM\Event\SMEvents;
+use Illuminate\Support\Facades\Event as EventFacade;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
+use SM\Event\SMEvents;
 use Symfony\Component\EventDispatcher\Event;
-use Illuminate\Support\Facades\Event as EventFacade;
 
 class DispatcherTest extends TestCase
 {

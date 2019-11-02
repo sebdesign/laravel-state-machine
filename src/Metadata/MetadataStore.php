@@ -31,7 +31,7 @@ class MetadataStore implements MetadataStoreInterface
     public function state($state, $key = null, $default = null)
     {
         foreach ($this->config['states'] as $value) {
-            if ($value['name'] === $state) {
+            if ($value['name'] == $state) {
                 return $this->get($value, $key, $default);
             }
         }

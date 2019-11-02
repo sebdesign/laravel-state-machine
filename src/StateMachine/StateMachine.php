@@ -65,7 +65,7 @@ class StateMachine extends BaseStateMachine
     protected function hasState($state)
     {
         foreach ($this->config['states'] as $value) {
-            if ($value['name'] === $state) {
+            if ($value['name'] == $state) {
                 return true;
             }
         }

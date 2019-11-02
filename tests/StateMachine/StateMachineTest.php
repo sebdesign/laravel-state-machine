@@ -39,7 +39,7 @@ class StateMachineTest extends TestCase
 
         // Assert
 
-        $this->assertEquals('pending_review', (string) $sm->getState());
+        $this->assertEquals('pending_review', $sm->getState());
     }
 
     /**

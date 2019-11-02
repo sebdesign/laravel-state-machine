@@ -108,10 +108,10 @@ class StateMachine extends BaseStateMachine
         }
 
         if (is_null($subject)) {
-            return $this->metadataStore->state((string) $this->getState(), $key, $default);
+            return $this->metadataStore->state($this->getState(), $key, $default);
         }
 
-        return $this->metadataStore->state((string) $this->getState(), $subject, $key);
+        return $this->metadataStore->state($this->getState(), $subject, $key);
     }
 
     protected function getTransitionMetadata($subject, $key, $default)

@@ -2,8 +2,8 @@
 
 namespace Sebdesign\SM\Callback;
 
-use SM\Callback\Callback;
 use Illuminate\Contracts\Auth\Access\Gate;
+use SM\Callback\Callback;
 
 class GateCallback extends Callback
 {

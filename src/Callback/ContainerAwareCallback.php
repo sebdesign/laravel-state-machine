@@ -11,9 +11,9 @@
 
 namespace Sebdesign\SM\Callback;
 
+use Illuminate\Contracts\Container\Container as ContainerInterface;
 use SM\Callback\Callback;
 use SM\Event\TransitionEvent;
-use Illuminate\Contracts\Container\Container as ContainerInterface;
 
 class ContainerAwareCallback extends Callback
 {

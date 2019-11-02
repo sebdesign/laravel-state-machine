@@ -2,10 +2,10 @@
 
 namespace Sebdesign\SM\Event;
 
+use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
 class Dispatcher implements EventDispatcherInterface
 {

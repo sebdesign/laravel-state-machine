@@ -2,14 +2,14 @@
 
 namespace Sebdesign\SM\Test\Callback;
 
-use Sebdesign\SM\Test\Article;
-use Sebdesign\SM\Test\TestCase;
-use SM\Factory\FactoryInterface;
-use SM\Callback\CallbackInterface;
-use Illuminate\Support\Facades\Gate;
-use Sebdesign\SM\Test\ArticlePolicy;
-use Sebdesign\SM\Callback\GateCallback;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Support\Facades\Gate;
+use Sebdesign\SM\Callback\GateCallback;
+use Sebdesign\SM\Test\Article;
+use Sebdesign\SM\Test\ArticlePolicy;
+use Sebdesign\SM\Test\TestCase;
+use SM\Callback\CallbackInterface;
+use SM\Factory\FactoryInterface;
 
 class GateCallbackTest extends TestCase
 {

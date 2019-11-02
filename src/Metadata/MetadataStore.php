@@ -2,8 +2,8 @@
 
 namespace Sebdesign\SM\Metadata;
 
-use SM\SMException;
 use Illuminate\Support\Arr;
+use SM\SMException;
 
 class MetadataStore implements MetadataStoreInterface
 {

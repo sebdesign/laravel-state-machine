@@ -54,8 +54,8 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerCallbackFactory()
     {
-        $this->app->bind('sm.callback.factory', function () {
-            return new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $this->app);
+        $this->app->bind('sm.callback.factory', function ($app) {
+            return new ContainerAwareCallbackFactory(ContainerAwareCallback::class, $app);
         });
 
         $this->app->alias('sm.callback.factory', CallbackFactoryInterface::class);
@@ -63,8 +63,8 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerEventDispatcher()
     {
-        $this->app->bind('sm.event.dispatcher', function () {
-            return new Dispatcher($this->app->make('events'));
+        $this->app->bind('sm.event.dispatcher', function ($app) {
+            return new Dispatcher($app->make('events'));
         });
 
         $this->app->alias('sm.event.dispatcher', EventDispatcherInterface::class);
@@ -72,11 +72,11 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerFactory()
     {
-        $this->app->singleton('sm.factory', function () {
+        $this->app->singleton('sm.factory', function ($app) {
             return new Factory(
-                $this->app->make('config')->get('state-machine'),
-                $this->app->make('sm.event.dispatcher'),
-                $this->app->make('sm.callback.factory')
+                $app->make('config')->get('state-machine', []),
+                $app->make('sm.event.dispatcher'),
+                $app->make('sm.callback.factory')
             );
         });
 
@@ -85,15 +85,15 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerCascadeTransitionCallback()
     {
-        $this->app->bind(CascadeTransitionCallback::class, function () {
-            return new CascadeTransitionCallback($this->app->make('sm.factory'));
+        $this->app->bind(CascadeTransitionCallback::class, function ($app) {
+            return new CascadeTransitionCallback($app->make('sm.factory'));
         });
     }
 
     protected function registerCommands()
     {
-        $this->app->bind(Debug::class, function () {
-            return new Debug($this->app->make('config')->get('state-machine', []));
+        $this->app->bind(Debug::class, function ($app) {
+            return new Debug($app->make('config')->get('state-machine', []));
         });
 
         $this->commands([

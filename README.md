@@ -74,8 +74,11 @@ $stateMachine->getPossibleTransitions();
 // Check if a transition can be applied: returns true or false
 $stateMachine->can('approve');
 
-// Apply a transition
+// Apply a transition: returns true or throws an SM\SMException
 $stateMachine->apply('publish');
+
+// Apply a transition without throwing an exception: returns true or false
+$stateMachine->apply('publish', true);
 ```
 
 ### Callbacks
@@ -192,7 +195,7 @@ When checking if a transition can be applied, the `SM\Event\SMEvents::TEST_TRANS
 
 Before and after a transition is being applied, the `SM\Event\SMEvents::PRE_TRANSITION` and `SM\Event\SMEvents::POST_TRANSITION` events are fired respectively.
 
-All the events receive an `SM\Event\TransitionEvent` instance.
+All the events receive a `Sebdesign\SM\Event\TransitionEvent` instance.
 
 If you wish to listen to all the events with the same listener, you can use the `winzou.state_machine.*` wildcard parameter.
 
@@ -222,6 +225,60 @@ protected $listen = [
         \App\Listeners\Transition::class,
     ],
 ];
+```
+
+### Context
+
+You can also pass additional data as an array when checking or applying transitions.
+This array will be passed to the `Sebdesign\SM\Event\TransitionEvent`.
+You can access the array using `$event->getContext()` in your event listeners or callbacks.
+
+Example using an event listener:
+```php
+<?php
+
+// Reject the transition of the approval date is past
+Event::listen(SMEvents::TEST_TRANSITION, function (TransitionEvent $event) {
+    $context = $event->getContext();
+
+    if ($context['approved_at']->isPast()) {
+        $event->setRejected();
+    }
+});
+
+// Check if a approve transition can be applied on some date
+$stateMachine->can('approve', ['approved_at' => now()]);
+```
+
+Example using a callback:
+```php
+<?php
+
+// Setup an callback after publishing
+[
+    'callbacks' => [
+        'after' => [
+            'after_publishing' => [
+                'on' => 'publish',
+                'do' => [App\Actions\PublishArticleAction::class, 'execute'],
+                'args' => ['object', 'event'],
+            ],
+        ],
+    ],
+];
+
+// Save the publish date in your action
+class PublishArticleAction
+{
+    public function execute(Article $article, TransitionEvent $event)
+    {
+        $context = $event->getContext();
+        $article->update(['published_at' => $context['published_at']]);
+    }
+}
+
+// Apply a publish transition on some date
+$stateMachine->apply('publish', false, ['published_at' => now()]);
 ```
 
 ## Metadata

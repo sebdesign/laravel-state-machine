@@ -2,14 +2,155 @@
 
 namespace Sebdesign\SM\Test\StateMachine;
 
+use Illuminate\Support\Facades\Event;
+use Sebdesign\SM\Event\TransitionEvent;
 use Sebdesign\SM\Metadata\MetadataStore;
 use Sebdesign\SM\StateMachine\StateMachine;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
+use SM\Event\SMEvents;
 use SM\SMException;
 
 class StateMachineTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_checks_if_a_transition_can_be_applied()
+    {
+        // Arrange
+
+        $sm = new StateMachine(
+            new Article(),
+            [
+                'graph' => 'default',
+                'states' => [
+                    ['name' => 'new'],
+                    ['name' => 'pending_review'],
+                    ['name' => 'published'],
+                ],
+                'transitions' => [
+                    'create' => ['from' => ['new'], 'to' => 'pending_review'],
+                    'publish' => ['from' => ['pending_review'], 'to' => 'published'],
+                ],
+            ],
+            $this->app->make('sm.event.dispatcher'),
+            $this->app->make('sm.callback.factory')
+        );
+
+        $this->assertTrue($sm->can('create'));
+
+        $this->assertFalse($sm->can('publish'));
+
+        $this->expectException(SMException::class);
+        $this->expectExceptionMessage('Transition "invalid" does not exist on object "Sebdesign\SM\Test\Article" with graph "default".');
+        $sm->can('invalid');
+    }
+
+    /**
+     * @test
+     */
+    public function it_checks_if_a_rejected_transition_can_be_applied()
+    {
+        // Arrange
+
+        Event::listen(SMEvents::TEST_TRANSITION, function (TransitionEvent $event) {
+            $event->setRejected();
+        });
+
+        $sm = new StateMachine(
+            new Article(),
+            [
+                'graph' => 'default',
+                'states' => [
+                    ['name' => 'new'],
+                    ['name' => 'pending_review'],
+                    ['name' => 'published'],
+                ],
+                'transitions' => [
+                    'create' => ['from' => ['new'], 'to' => 'pending_review'],
+                    'publish' => ['from' => ['pending_review'], 'to' => 'published'],
+                ],
+            ],
+            $this->app->make('sm.event.dispatcher'),
+            $this->app->make('sm.callback.factory')
+        );
+
+        $this->assertFalse($sm->can('create'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_applies_a_transition()
+    {
+        // Arrange
+
+        $sm = new StateMachine(
+            new Article(),
+            [
+                'graph' => 'default',
+                'states' => [
+                    ['name' => 'new'],
+                    ['name' => 'pending_review'],
+                    ['name' => 'published'],
+                ],
+                'transitions' => [
+                    'create' => ['from' => ['new'], 'to' => 'pending_review'],
+                    'publish' => ['from' => ['pending_review'], 'to' => 'published'],
+                ],
+            ],
+            $this->app->make('sm.event.dispatcher'),
+            $this->app->make('sm.callback.factory')
+        );
+
+        $this->assertTrue($sm->apply('create'));
+        $this->assertEquals('pending_review', $sm->getState());
+
+        $this->assertFalse($sm->apply('create', true));
+
+        $this->expectException(SMException::class);
+        $this->expectExceptionMessage('Transition "create" cannot be applied on state "pending_review" of object "Sebdesign\SM\Test\Article" with graph "default".');
+        $this->assertFalse($sm->apply('create'));
+
+        $this->expectException(SMException::class);
+        $this->expectExceptionMessage('Transition "invalid" does not exist on state "pending_review" of object "Sebdesign\SM\Test\Article" with graph "default".');
+        $sm->can('invalid');
+    }
+
+    /**
+     * @test
+     */
+    public function it_doesnt_apply_a_rejected_transition()
+    {
+        // Arrange
+
+        Event::listen(SMEvents::PRE_TRANSITION, function (TransitionEvent $event) {
+            $event->setRejected();
+        });
+
+        $sm = new StateMachine(
+            new Article(),
+            [
+                'graph' => 'default',
+                'states' => [
+                    ['name' => 'new'],
+                    ['name' => 'pending_review'],
+                    ['name' => 'published'],
+                ],
+                'transitions' => [
+                    'create' => ['from' => ['new'], 'to' => 'pending_review'],
+                    'publish' => ['from' => ['pending_review'], 'to' => 'published'],
+                ],
+            ],
+            $this->app->make('sm.event.dispatcher'),
+            $this->app->make('sm.callback.factory')
+        );
+
+        $this->assertFalse($sm->apply('create', true));
+        $this->assertEquals('new', $sm->getState());
+    }
+
     /**
      * @test
      */
@@ -66,7 +207,7 @@ class StateMachineTest extends TestCase
         );
 
         $this->expectException(SMException::class);
-        $this->expectExceptionMessage('Cannot set the state to "invalid" to object "Sebdesign\SM\Test\Article" with graph default because it is not pre-defined.');
+        $this->expectExceptionMessage('Cannot set the state to "invalid" to object "Sebdesign\SM\Test\Article" with graph "default" because it is not pre-defined.');
 
         // Act
 

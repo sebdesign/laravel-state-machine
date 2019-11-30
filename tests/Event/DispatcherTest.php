@@ -4,6 +4,7 @@ namespace Sebdesign\SM\Test\Event;
 
 use Exception;
 use Illuminate\Support\Facades\Event as EventFacade;
+use Sebdesign\SM\Event\TransitionEvent;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
 use SM\Event\SMEvents;
@@ -147,15 +148,11 @@ class DispatcherTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_transition_events()
+    public function it_dispatches_a_test_transition_event()
     {
         // Arrange
 
-        $this->expectsEvents([
-            SMEvents::TEST_TRANSITION,
-            SMEvents::PRE_TRANSITION,
-            SMEvents::POST_TRANSITION,
-        ]);
+        EventFacade::fake();
 
         $this->app['config']->set('state-machine.graphA.class', Article::class);
         $article = new Article();
@@ -165,7 +162,54 @@ class DispatcherTest extends TestCase
 
         // Act
 
-        $sm->can('create');
-        $sm->apply('create');
+        $sm->can('create', ['foo' => 'bar']);
+
+        EventFacade::assertDispatched(SMEvents::TEST_TRANSITION, function ($name, $event) {
+            $this->assertInstanceOf(TransitionEvent::class, $event);
+            $this->assertEquals(['foo' => 'bar'], $event->getContext());
+
+            return true;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_transition_events_before_and_after()
+    {
+        // Arrange
+
+        EventFacade::fake();
+
+        $this->app['config']->set('state-machine.graphA.class', Article::class);
+        $article = new Article();
+
+        $factory = $this->app->make('sm.factory');
+        $sm = $factory->get($article, 'graphA');
+
+        // Act
+
+        $sm->apply('create', false, ['foo' => 'bar']);
+
+        EventFacade::assertDispatched(SMEvents::TEST_TRANSITION, function ($name, $event) {
+            $this->assertInstanceOf(TransitionEvent::class, $event);
+            $this->assertEquals(['foo' => 'bar'], $event->getContext());
+
+            return true;
+        });
+
+        EventFacade::assertDispatched(SMEvents::PRE_TRANSITION, function ($name, $event) {
+            $this->assertInstanceOf(TransitionEvent::class, $event);
+            $this->assertEquals(['foo' => 'bar'], $event->getContext());
+
+            return true;
+        });
+
+        EventFacade::assertDispatched(SMEvents::POST_TRANSITION, function ($name, $event) {
+            $this->assertInstanceOf(TransitionEvent::class, $event);
+            $this->assertEquals(['foo' => 'bar'], $event->getContext());
+
+            return true;
+        });
     }
 }

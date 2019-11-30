@@ -2,9 +2,11 @@
 
 namespace Sebdesign\SM\StateMachine;
 
+use Sebdesign\SM\Event\TransitionEvent;
 use Sebdesign\SM\Metadata\MetadataStore;
 use Sebdesign\SM\Metadata\MetadataStoreInterface;
 use SM\Callback\CallbackFactoryInterface;
+use SM\Event\SMEvents;
 use SM\SMException;
 use SM\StateMachine\StateMachine as BaseStateMachine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,7 +33,84 @@ class StateMachine extends BaseStateMachine
     ) {
         parent::__construct($object, $config, $dispatcher, $callbackFactory);
 
-        $this->metadataStore = $metadataStore ?: new MetadataStore($config);
+        $this->metadataStore = $metadataStore ?? new MetadataStore($config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function can($transition, array $context = [])
+    {
+        if (! isset($this->config['transitions'][$transition])) {
+            throw new SMException(sprintf(
+                'Transition "%s" does not exist on object "%s" with graph "%s".',
+                $transition,
+                get_class($this->object),
+                $this->config['graph']
+            ));
+        }
+
+        if (! in_array($this->getState(), $this->config['transitions'][$transition]['from'])) {
+            return false;
+        }
+
+        $event = new TransitionEvent($transition, $this->getState(), $this->config['transitions'][$transition], $this);
+
+        $event->setContext($context);
+
+        if (isset($this->dispatcher)) {
+            $this->dispatcher->dispatch(SMEvents::TEST_TRANSITION, $event);
+
+            if ($event->isRejected()) {
+                return false;
+            }
+        }
+
+        return $this->callCallbacks($event, 'guard');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply($transition, $soft = false, array $context = [])
+    {
+        if (! $this->can($transition, $context)) {
+            if ($soft) {
+                return false;
+            }
+
+            throw new SMException(sprintf(
+                'Transition "%s" cannot be applied on state "%s" of object "%s" with graph "%s".',
+                $transition,
+                $this->getState(),
+                get_class($this->object),
+                $this->config['graph']
+            ));
+        }
+
+        $event = new TransitionEvent($transition, $this->getState(), $this->config['transitions'][$transition], $this);
+
+        $event->setContext($context);
+
+        if (isset($this->dispatcher)) {
+            $this->dispatcher->dispatch(SMEvents::PRE_TRANSITION, $event);
+
+            if ($event->isRejected()) {
+                return false;
+            }
+        }
+
+        $this->callCallbacks($event, 'before');
+
+        $this->setState($this->config['transitions'][$transition]['to']);
+
+        $this->callCallbacks($event, 'after');
+
+        if (isset($this->dispatcher)) {
+            $this->dispatcher->dispatch(SMEvents::POST_TRANSITION, $event);
+        }
+
+        return true;
     }
 
     /**
@@ -45,7 +124,7 @@ class StateMachine extends BaseStateMachine
     {
         if (! $this->hasState($state)) {
             throw new SMException(sprintf(
-                'Cannot set the state to "%s" to object "%s" with graph %s because it is not pre-defined.',
+                'Cannot set the state to "%s" to object "%s" with graph "%s" because it is not pre-defined.',
                 $state,
                 get_class($this->object),
                 $this->config['graph']

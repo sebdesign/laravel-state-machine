@@ -8,6 +8,7 @@ use Laravel\Lumen\Application as LumenApplication;
 use Sebdesign\SM\Callback\ContainerAwareCallback;
 use Sebdesign\SM\Callback\ContainerAwareCallbackFactory;
 use Sebdesign\SM\Commands\Debug;
+use Sebdesign\SM\Commands\Visualize;
 use Sebdesign\SM\Event\Dispatcher;
 use Sebdesign\SM\Factory\Factory;
 use SM\Callback\CallbackFactoryInterface;
@@ -96,8 +97,13 @@ class ServiceProvider extends BaseServiceProvider
             return new Debug($app->make('config')->get('state-machine', []));
         });
 
+        $this->app->bind(Visualize::class, function ($app) {
+            return new Visualize($app->make('config')->get('state-machine', []));
+        });
+
         $this->commands([
             Debug::class,
+            Visualize::class,
         ]);
     }
 

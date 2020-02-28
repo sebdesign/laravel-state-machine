@@ -6,6 +6,10 @@ php:
   - 7.3
   - 7.4snapshot
 
++before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install graphviz
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source

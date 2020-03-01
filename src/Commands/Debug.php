@@ -104,6 +104,11 @@ class Debug extends Command
 
             if (isset($state['metadata'])) {
                 $metadata = implode(PHP_EOL, array_map(function ($value, $key) {
+                    $value = is_array($value) ? 'Array' : $value;
+                    if (is_bool($value)) {
+                        $value = $value ? 'true' : 'false';
+                    }
+
                     return vsprintf('%s: %s', [$key, $value]);
                 }, $state['metadata'], array_keys($state['metadata'])));
             } else {

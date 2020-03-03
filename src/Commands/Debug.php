@@ -103,9 +103,7 @@ class Debug extends Command
             }
 
             if (isset($state['metadata'])) {
-                $metadata = implode(PHP_EOL, array_map(function ($value, $key) {
-                    return vsprintf('%s: %s', [$key, $value]);
-                }, $state['metadata'], array_keys($state['metadata'])));
+                $metadata = json_encode($state['metadata'], JSON_PRETTY_PRINT);
             } else {
                 $metadata = null;
             }

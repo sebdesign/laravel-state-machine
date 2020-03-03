@@ -29,10 +29,8 @@ class GateCallback extends Callback
 
     /**
      * Check if the abilities are allowed against the gate.
-     *
-     * @return bool
      */
-    public function check()
+    public function check(): bool
     {
         return $this->gate->check($this->specs['can'], func_get_args());
     }

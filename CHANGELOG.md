@@ -5,6 +5,18 @@ All Notable changes to `laravel-state-machine` will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.0.0] - 2019-11-30
+
+### Added
+- Add support for Laravel 7
+- Add command to generate images of graphs ([#32](https://github.com/sebdesign/laravel-state-machine/pull/32))
+
+### Fixed
+- Display array when debugging metadata ([#33](https://github.com/sebdesign/laravel-state-machine/pull/33))
+
+### Removed
+- Remove support for Laravel 6
+
 ## [v2.1.0] - 2019-11-30
 
 ### Added

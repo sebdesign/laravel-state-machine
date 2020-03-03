@@ -3,7 +3,6 @@
 namespace Sebdesign\SM\Event;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,11 +12,6 @@ class Dispatcher implements EventDispatcherInterface
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected $dispatcher;
-
-    /**
-     * @var array
-     */
-    protected $events = [];
 
     /**
      * @param \Illuminate\Contracts\Events\Dispatcher $dispatcher
@@ -30,13 +24,13 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName, Event $event = null)
+    public function dispatch(object $event, string $eventName = null): object
     {
-        if (is_null($event)) {
-            $event = new Event();
+        if (is_null($eventName)) {
+            $this->dispatcher->dispatch($event);
+        } else {
+            $this->dispatcher->dispatch($eventName, $event);
         }
-
-        $this->dispatcher->dispatch($eventName, $event);
 
         return $event;
     }
@@ -44,7 +38,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function addListener($eventName, $listener, $priority = 0)
+    public function addListener(string $eventName, $listener, int $priority = 0)
     {
         throw new \Exception('Please use `Event::listen()`.');
     }
@@ -60,7 +54,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function removeListener($eventName, $listener)
+    public function removeListener(string $eventName, $listener)
     {
         throw new \Exception('Please use `Event::forget()`.');
     }
@@ -76,7 +70,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getListeners($eventName = null)
+    public function getListeners(string $eventName = null)
     {
         throw new \Exception('Please use `Event::getListeners()`.');
     }
@@ -84,7 +78,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getListenerPriority($eventName, $listener)
+    public function getListenerPriority(string $eventName, $listener)
     {
         throw new \Exception('Event priority is not supported anymore in Laravel.');
     }
@@ -92,7 +86,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function hasListeners($eventName = null)
+    public function hasListeners(string $eventName = null)
     {
         throw new \Exception('Please use `Event::hasListeners()`.');
     }

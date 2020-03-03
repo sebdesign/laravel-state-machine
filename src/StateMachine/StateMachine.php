@@ -39,7 +39,7 @@ class StateMachine extends BaseStateMachine
     /**
      * {@inheritdoc}
      */
-    public function can($transition, array $context = [])
+    public function can($transition, array $context = []): bool
     {
         if (! isset($this->config['transitions'][$transition])) {
             throw new SMException(sprintf(
@@ -59,7 +59,7 @@ class StateMachine extends BaseStateMachine
         $event->setContext($context);
 
         if (isset($this->dispatcher)) {
-            $this->dispatcher->dispatch(SMEvents::TEST_TRANSITION, $event);
+            $this->dispatcher->dispatch($event, SMEvents::TEST_TRANSITION);
 
             if ($event->isRejected()) {
                 return false;
@@ -72,7 +72,7 @@ class StateMachine extends BaseStateMachine
     /**
      * {@inheritdoc}
      */
-    public function apply($transition, $soft = false, array $context = [])
+    public function apply($transition, bool $soft = false, array $context = []): bool
     {
         if (! $this->can($transition, $context)) {
             if ($soft) {
@@ -93,7 +93,7 @@ class StateMachine extends BaseStateMachine
         $event->setContext($context);
 
         if (isset($this->dispatcher)) {
-            $this->dispatcher->dispatch(SMEvents::PRE_TRANSITION, $event);
+            $this->dispatcher->dispatch($event, SMEvents::PRE_TRANSITION);
 
             if ($event->isRejected()) {
                 return false;
@@ -107,20 +107,16 @@ class StateMachine extends BaseStateMachine
         $this->callCallbacks($event, 'after');
 
         if (isset($this->dispatcher)) {
-            $this->dispatcher->dispatch(SMEvents::POST_TRANSITION, $event);
+            $this->dispatcher->dispatch($event, SMEvents::POST_TRANSITION);
         }
 
         return true;
     }
 
     /**
-     * Set a new state to the underlying object.
-     *
-     * @param string $state
-     *
-     * @throws \SM\SMException
+     * {@inheritdoc}
      */
-    protected function setState($state)
+    protected function setState($state): void
     {
         if (! $this->hasState($state)) {
             throw new SMException(sprintf(
@@ -155,6 +151,10 @@ class StateMachine extends BaseStateMachine
     /**
      * Get the metadata.
      *
+     * @param  string|null $type
+     * @param  string|null $subject
+     * @param  string|null $key
+     * @param  mixed       $default
      * @return \Sebdesign\SM\Metadata\MetadataStoreInterface
      */
     public function metadata($type = null, $subject = null, $key = null, $default = null)
@@ -175,26 +175,43 @@ class StateMachine extends BaseStateMachine
         }
     }
 
+    /**
+     * @param  string|null $key
+     * @param  mixed       $default
+     * @return mixed
+     */
     protected function getGraphMetadata($key, $default)
     {
         return $this->metadataStore->graph($key, $default);
     }
 
+    /**
+     * @param  string|null $subject
+     * @param  string|null $key
+     * @param  mixed       $default
+     * @return mixed
+     */
     protected function getStateMetadata($subject, $key, $default)
     {
-        if ($this->hasState($subject)) {
-            return $this->metadataStore->state($subject, $key, $default);
-        }
-
         if (is_null($subject)) {
             return $this->metadataStore->state($this->getState(), $key, $default);
+        }
+
+        if ($this->hasState($subject)) {
+            return $this->metadataStore->state($subject, $key, $default);
         }
 
         return $this->metadataStore->state($this->getState(), $subject, $key);
     }
 
+    /**
+     * @param  string|null $subject
+     * @param  string|null $key
+     * @param  mixed       $default
+     * @return mixed
+     */
     protected function getTransitionMetadata($subject, $key, $default)
     {
-        return $this->metadataStore->transition($subject, $key, $default);
+        return $this->metadataStore->transition((string) $subject, $key, $default);
     }
 }

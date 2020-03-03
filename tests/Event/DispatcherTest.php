@@ -8,7 +8,7 @@ use Sebdesign\SM\Event\TransitionEvent;
 use Sebdesign\SM\Test\Article;
 use Sebdesign\SM\Test\TestCase;
 use SM\Event\SMEvents;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DispatcherTest extends TestCase
 {
@@ -19,13 +19,15 @@ class DispatcherTest extends TestCase
     {
         // Arrange
 
-        EventFacade::shouldReceive('dispatch')->once()->with('foo', \Mockery::type(Event::class));
+        $event = $this->mock(TransitionEvent::class);
+
+        EventFacade::shouldReceive('dispatch')->once()->with('foo', $event);
 
         $dispatcher = $this->app->make('sm.event.dispatcher');
 
         // Act
 
-        $event = $dispatcher->dispatch('foo');
+        $event = $dispatcher->dispatch($event, 'foo');
 
         // Assert
 

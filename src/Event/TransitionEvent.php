@@ -11,19 +11,12 @@ class TransitionEvent extends BaseTransitionEvent
      */
     protected $context = [];
 
-    /**
-     * @param array $context
-     * @return void
-     */
-    public function setContext(array $context)
+    public function setContext(array $context): void
     {
         $this->context = $context;
     }
 
-    /**
-     * @return array
-     */
-    public function getContext()
+    public function getContext(): array
     {
         return $this->context;
     }

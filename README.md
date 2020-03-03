@@ -10,7 +10,17 @@ This is a Laravel service provider for [winzou/state-machine](https://github.com
 
 ## Installation
 
-You can install the package via composer. This package requires Laravel 5.5 or higher.
+You can install the package via composer. This package requires Laravel 7.0 or higher.
+
+### Versions
+
+If you need to install this package in older Laravel installations, use the table below to find a compatible version.
+
+| Package | Laravel | PHP |
+| :--- | :--- | :--- |
+| **^3.0** | `^7.0` | `^7.2.5` |
+| **^2.0** | `^6.0` | `^7.0` |
+| **^1.0** | `5.1.* - 5.8.*` | `^5.5.9 | ^7.0` |
 
 ``` bash
 composer require sebdesign/laravel-state-machine

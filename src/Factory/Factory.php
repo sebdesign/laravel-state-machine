@@ -7,6 +7,7 @@ use Sebdesign\SM\StateMachine\StateMachine;
 use SM\Callback\CallbackFactoryInterface;
 use SM\Factory\Factory as BaseFactory;
 use SM\SMException;
+use SM\StateMachine\StateMachineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Factory extends BaseFactory
@@ -28,9 +29,9 @@ class Factory extends BaseFactory
     }
 
     /**
-     * {@inheritcoc}.
+     * {@inheritdoc}
      */
-    protected function createStateMachine($object, array $config)
+    protected function createStateMachine($object, array $config): StateMachineInterface
     {
         if (! isset($config['state_machine_class'])) {
             $class = StateMachine::class;
@@ -49,7 +50,7 @@ class Factory extends BaseFactory
     /**
      * {@inheritdoc}
      */
-    public function addConfig(array $config, $graph = 'default')
+    public function addConfig(array $config, string $graph = 'default'): void
     {
         $config['states'] = $this->normalizeStates($config);
 
@@ -64,11 +65,8 @@ class Factory extends BaseFactory
      *
      * - The state is defined as an associative array.
      *   E.g. ['states' => [['name' => 'stateA']]]
-     *
-     * @param  array $config
-     * @return array
      */
-    protected function normalizeStates(array $config)
+    protected function normalizeStates(array $config): array
     {
         $states = [];
 

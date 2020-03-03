@@ -63,10 +63,8 @@ class ContainerAwareCallback extends Callback
 
     /**
      * Determine if the given string is in Class@method syntax.
-     *
-     * @return bool
      */
-    protected function isCallableWithAtSign()
+    protected function isCallableWithAtSign(): bool
     {
         return is_string($this->callable) && strpos($this->callable, '@') !== false;
     }

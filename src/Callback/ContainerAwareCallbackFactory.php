@@ -14,6 +14,7 @@ namespace Sebdesign\SM\Callback;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 use SM\Callback\CallbackFactory;
+use SM\Callback\CallbackInterface;
 use SM\SMException;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
@@ -39,7 +40,7 @@ class ContainerAwareCallbackFactory extends CallbackFactory
     /**
      * {@inheritdoc}
      */
-    public function get(array $specs)
+    public function get(array $specs): CallbackInterface
     {
         if (isset($specs['can'])) {
             return new GateCallback($specs, $this->container->make(Gate::class));

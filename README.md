@@ -478,6 +478,19 @@ $ php artisan winzou:state-machine:debug simple
 +----------------------+--------------+------------------------------+---------------+
 ```
 
+## Visualize command
+
+An artisan command for generating an image of a given graph is included. It accepts the name of the graph as an argument.
+It's taken from the corresponding bundle for Symfony: [https://github.com/MadMind/StateMachineVisualizationBundle](https://github.com/MadMind/StateMachineVisualizationBundle), so all credits goes to the original author.
+
+If you want to run this command, you need to have installed **dot** - Part of graphviz package ([http://www.graphviz.org/](http://www.graphviz.org/)). In your mac, this is equal to having run ```brew install graphviz```
+
+```bash
+php artisan winzou:state-machine:visualize {graph? : A state machine graph} {--output=./graph.jpg} {--format=jpg} {--direction=TB} {--shape=circle} {--dot-path=/usr/local/bin/dot}
+```
+
+![test](https://user-images.githubusercontent.com/1104083/75524206-bcfd1a00-5a0d-11ea-9dce-aa0d61e46e75.jpg)
+
 ## Statable trait for Eloquent models
 
 If you want to interact with the state machine directly within your models, you can install the [laravel-statable](https://github.com/iben12/laravel-statable) package by [iben12](https://github.com/iben12).

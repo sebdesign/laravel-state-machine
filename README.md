@@ -12,6 +12,23 @@ This is a Laravel service provider for [winzou/state-machine](https://github.com
 
 You can install the package via composer. This package requires Laravel 7.0 or higher.
 
+In your composer.json, add the following section:
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/sebdesign/state-machine"
+    }
+]
+```
+
+Then require the package using the command-line interface: 
+
+```bash
+composer require sebdesign/laravel-state-machine
+```
+
 ### Versions
 
 If you need to install this package in older Laravel installations, use the table below to find a compatible version.
@@ -21,10 +38,6 @@ If you need to install this package in older Laravel installations, use the tabl
 | **^3.0** | `^7.0` | <code>^7.2.5</code> |
 | **^2.0** | `5.5.* - ^6.0` | <code>^7.0</code> |
 | **^1.0** | `5.1.* - 5.8.*` | <code>^5.5.9 &#124; ^7.0</code> |
-
-``` bash
-composer require sebdesign/laravel-state-machine
-```
 
 Since version 5.5, Laravel uses package auto-discovery, so you don't need to manually add the ServiceProvider and the facade. If you don't use auto-discovery or you are using an older version, add the service provider and the facade in config/app.php.
 

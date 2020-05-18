@@ -136,11 +136,11 @@ class Visualize extends Command
         // Use first value from 'states' as start.
         $start = $config['states'][0]['name'];
         $result[] = "node [shape = {$nodeShape}];"; // Default nodes
-        $result[] = "_start_ -> {$start};"; // Input node -> starting node.
+        $result[] = "_start_ -> \"{$start}\";"; // Input node -> starting node.
 
         foreach ($config['transitions'] as $name => $transition) {
             foreach ($transition['from'] as $from) {
-                $result[] = "{$from} -> {$transition['to']} [label = \"{$name}\"];";
+                $result[] = "\"{$from}\" -> \"{$transition['to']}\" [label = \"{$name}\"];";
             }
         }
 

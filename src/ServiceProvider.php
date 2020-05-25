@@ -33,8 +33,8 @@ class ServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             if ($this->app instanceof LaravelApplication) {
                 $this->publishes([
-                   __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
-               ], 'config');
+                    __DIR__.'/../config/state-machine.php' => config_path('state-machine.php'),
+                ], 'config');
             } elseif ($this->app instanceof LumenApplication) {
                 $this->app->configure('state-machine');
             }

@@ -72,7 +72,7 @@ class StateMachine extends BaseStateMachine
     /**
      * {@inheritdoc}
      */
-    public function apply($transition, bool $soft = false, array $context = []): bool
+    public function apply($transition, $soft = false, array $context = []): bool
     {
         if (! $this->can($transition, $context)) {
             if ($soft) {

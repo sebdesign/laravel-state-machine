@@ -306,7 +306,7 @@ $stateMachine->apply('publish', false, ['published_at' => now()]);
 
 ## Metadata
 
-You can optinally store metadata in graphs, states and transitions.
+You can optionally store metadata in graphs, states and transitions.
 The metadata are stored in associative arrays, and can be anything you want.
 
 ```php

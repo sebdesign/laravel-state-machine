@@ -9,16 +9,25 @@ matrix:
   include:
 # Laravel 7.x
   - php: 7.2
+    env: LARAVEL=^7.0 TESTBENCH=^5.0 PHPUNIT=~8.5
   - php: 7.3
+    env: LARAVEL=^7.0 TESTBENCH=^5.0 PHPUNIT=~8.5
   - php: 7.4
+    env: LARAVEL=^7.0 TESTBENCH=^5.0 PHPUNIT=~8.5
+# Laravel 8.x
+  - php: 7.3
+    env: LARAVEL=^8.0 TESTBENCH=^6.0 PHPUNIT=~9.3
+  - php: 7.4
+    env: LARAVEL=^8.0 TESTBENCH=^6.0 PHPUNIT=~9.3
 
-+before_install:
+before_install:
   - sudo apt-get update
   - sudo apt-get -y install graphviz
 
 before_script:
   - phpenv config-rm xdebug.ini
   - composer self-update --stable --no-interaction
+  - composer require orchestra/testbench:$TESTBENCH orchestra/database:$ORCHESTRA_DATABASE phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev
 
 install:
   - travis_retry composer install --no-suggest --no-interaction

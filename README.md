@@ -12,16 +12,7 @@ This is a Laravel service provider for [winzou/state-machine](https://github.com
 
 You can install the package via composer. This package requires Laravel 7.0 or higher.
 
-In your composer.json, add the following section:
-
-```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/sebdesign/state-machine"
-    }
-]
-```
+For previous Laravel versions, please check the [compatibility table](#versions).
 
 Then require the package using the command-line interface: 
 
@@ -35,7 +26,7 @@ If you need to install this package in older Laravel installations, use the tabl
 
 | Package | Laravel | PHP |
 | :--- | :--- | :--- |
-| **^3.0** | `^7.0` | <code>^7.2.5</code> |
+| **^3.0** | `^7.0 - ^8.0` | <code>^7.2.5</code> |
 | **^2.0** | `5.5.* - ^6.0` | <code>^7.0</code> |
 | **^1.0** | `5.1.* - 5.8.*` | <code>^5.5.9 &#124; ^7.0</code> |
 

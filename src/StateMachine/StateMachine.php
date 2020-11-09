@@ -140,7 +140,7 @@ class StateMachine extends BaseStateMachine
     protected function hasState($state)
     {
         foreach ($this->config['states'] as $value) {
-            if ($value['name'] == $state) {
+            if (is_array($value) && $value['name'] === $state) {
                 return true;
             }
         }

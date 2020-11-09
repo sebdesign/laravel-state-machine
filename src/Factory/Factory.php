@@ -39,7 +39,7 @@ class Factory extends BaseFactory
             $class = $config['state_machine_class'];
         } else {
             throw new SMException(sprintf(
-               'Class "%s" for creating a new state machine does not exist.',
+                'Class "%s" for creating a new state machine does not exist.',
                 $config['state_machine_class']
             ));
         }
@@ -60,6 +60,9 @@ class Factory extends BaseFactory
     /**
      * Normalize the states as associative arrays.
      *
+     * - The state is null.
+     *   E.g. ['states' => [null]]
+     *
      * - The state is defined as a string.
      *   E.g. ['states' => ['stateA']]
      *
@@ -71,7 +74,7 @@ class Factory extends BaseFactory
         $states = [];
 
         foreach ($config['states'] as $state) {
-            if (is_scalar($state)) {
+            if (is_null($state) || is_scalar($state)) {
                 $state = ['name' => $state];
             }
 

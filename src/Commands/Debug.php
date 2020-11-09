@@ -98,6 +98,10 @@ class Debug extends Command
     protected function printStates(array $states)
     {
         $this->table(['Configured States:', 'Metadata:'], array_map(function ($state) {
+            if (is_null($state)) {
+                return [$state, null];
+            }
+
             if (is_string($state)) {
                 return [$state, null];
             }

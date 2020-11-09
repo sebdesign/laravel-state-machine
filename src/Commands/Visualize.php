@@ -134,7 +134,11 @@ class Visualize extends Command
         $result[] = 'node [shape = point]; _start_'; // Input node
 
         // Use first value from 'states' as start.
-        $start = $config['states'][0]['name'];
+        if (is_array($config['states'][0])) {
+            $start = $config['states'][0]['name'] ?? 'null';
+        } else {
+            $start = $config['states'][0] ?? 'null';
+        }
         $result[] = "node [shape = {$nodeShape}];"; // Default nodes
         $result[] = "_start_ -> \"{$start}\";"; // Input node -> starting node.
 

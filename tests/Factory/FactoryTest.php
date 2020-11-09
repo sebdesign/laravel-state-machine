@@ -112,6 +112,7 @@ class FactoryTest extends TestCase
         $factory->addConfig([
             'class' => Article::class,
             'states' => [
+                null,
                 'new',
                 42,
                 ['name' => 'pending_review'],
@@ -127,6 +128,7 @@ class FactoryTest extends TestCase
         $attribute->setAccessible(false);
 
         $this->assertEquals([
+            ['name' => null],
             ['name' => 'new'],
             ['name' => 42],
             ['name' => 'pending_review'],

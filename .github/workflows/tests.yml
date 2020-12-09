@@ -1,0 +1,57 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4, 7.3, 7.2]
+        laravel: [^8.0, ^7.0]
+        include:
+          - laravel: ^7.0
+            testbench: ^5.0
+            phpunit: ^8.5
+          - laravel: ^8.0
+            testbench: ^6.0
+            phpunit: ^9.3
+        exclude:
+          - laravel: ^8.0
+            php: 7.2
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Install GraphViz
+        run: sudo apt-get install graphviz
+
+      - name: Install dependencies
+        run: |
+          composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose --whitelist=src --coverage-clover=build/coverage/coverage.clover
+
+      - name: Upload coverage
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover build/coverage/coverage.clover

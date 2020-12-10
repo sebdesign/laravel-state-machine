@@ -2,9 +2,9 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sebdesign/laravel-state-machine.svg?style=flat-square)](https://packagist.org/packages/sebdesign/laravel-state-machine)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://github.com/sebdesign/laravel-state-machine/workflows/Tests/badge.svg)](https://github.com/sebdesign/laravel-state-machine/actions)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sebdesign/laravel-state-machine/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
+[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-state-machine/Tests/master?style=flat-square)](https://github.com/sebdesign/laravel-state-machine/actions)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/sebdesign/laravel-state-machine/master?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-state-machine/master?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
 [![StyleCI](https://styleci.io/repos/78893356/shield?style=flat-square)](https://styleci.io/repos/78893356)
 
 This is a Laravel service provider for [winzou/state-machine](https://github.com/winzou/state-machine). It provides dependency injection for the `StateMachineFactory`. You can also use Laravel's service container to resolve class methods for the callbacks. A facade is also available for convenience.

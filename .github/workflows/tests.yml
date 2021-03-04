@@ -52,5 +52,4 @@ jobs:
         run: vendor/bin/phpunit --verbose --whitelist=src --coverage-clover=build/coverage/coverage.clover
 
       - name: Upload coverage
-        run: |
-          vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage/coverage.clover
+        run: vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage/coverage.clover

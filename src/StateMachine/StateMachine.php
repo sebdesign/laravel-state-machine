@@ -22,7 +22,7 @@ class StateMachine extends BaseStateMachine
     /**
      * {@inheritdoc}
      *
-     * @param \Sebdesign\SM\Metadata\MetadataStoreInterface|null $metadataStore
+     * @param  \Sebdesign\SM\Metadata\MetadataStoreInterface|null  $metadataStore
      */
     public function __construct(
         $object,
@@ -134,7 +134,7 @@ class StateMachine extends BaseStateMachine
     /**
      * Check if the graph has the given state.
      *
-     * @param  string $state
+     * @param  string  $state
      * @return bool
      */
     protected function hasState($state)
@@ -151,10 +151,10 @@ class StateMachine extends BaseStateMachine
     /**
      * Get the metadata.
      *
-     * @param  string|null $type
-     * @param  string|null $subject
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  string|null  $type
+     * @param  string|null  $subject
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return \Sebdesign\SM\Metadata\MetadataStoreInterface
      */
     public function metadata($type = null, $subject = null, $key = null, $default = null)
@@ -176,8 +176,8 @@ class StateMachine extends BaseStateMachine
     }
 
     /**
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     protected function getGraphMetadata($key, $default)
@@ -186,9 +186,9 @@ class StateMachine extends BaseStateMachine
     }
 
     /**
-     * @param  string|null $subject
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  string|null  $subject
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     protected function getStateMetadata($subject, $key, $default)
@@ -205,9 +205,9 @@ class StateMachine extends BaseStateMachine
     }
 
     /**
-     * @param  string|null $subject
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  string|null  $subject
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     protected function getTransitionMetadata($subject, $key, $default)

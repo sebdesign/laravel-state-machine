@@ -62,9 +62,9 @@ class MetadataStore implements MetadataStoreInterface
     /**
      * Get a metadata value from a subject.
      *
-     * @param  array       $subject
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  array  $subject
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     protected function get(array $subject, $key, $default)

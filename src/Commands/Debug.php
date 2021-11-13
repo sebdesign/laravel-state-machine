@@ -26,7 +26,7 @@ class Debug extends Command
     /**
      * Create a new command instance.
      *
-     * @param array $config
+     * @param  array  $config
      */
     public function __construct(array $config)
     {
@@ -93,7 +93,7 @@ class Debug extends Command
     /**
      * Display the graph states on a table.
      *
-     * @param array $states
+     * @param  array  $states
      */
     protected function printStates(array $states)
     {
@@ -119,7 +119,7 @@ class Debug extends Command
     /**
      * Display the graph transitions on a table.
      *
-     * @param array $transitions
+     * @param  array  $transitions
      */
     protected function printTransitions(array $transitions)
     {
@@ -145,7 +145,7 @@ class Debug extends Command
     /**
      * Display the graph callbacks on a table.
      *
-     * @param array $allCallbacks
+     * @param  array  $allCallbacks
      */
     protected function printCallbacks(array $allCallbacks)
     {
@@ -167,7 +167,7 @@ class Debug extends Command
     /**
      * Format the clauses that satisfy the callback.
      *
-     * @param  array $specs
+     * @param  array  $specs
      * @return string
      */
     protected function formatSatisfies(array $specs)
@@ -188,7 +188,7 @@ class Debug extends Command
      * Format the callback clause.
      *
      * @param  array  $specs
-     * @param  string $clause
+     * @param  string  $clause
      * @return string
      */
     protected function formatClause(array $specs, $clause)

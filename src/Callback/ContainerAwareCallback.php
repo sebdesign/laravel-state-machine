@@ -23,9 +23,9 @@ class ContainerAwareCallback extends Callback
     protected $container;
 
     /**
-     * @param array                                     $specs      Specification for the callback to be called
-     * @param mixed                                     $callable   Closure, callable or string that will be called if specifications pass
-     * @param \Illuminate\Contracts\Container\Container $container  The service container that will be used to resolve the callable
+     * @param  array  $specs  Specification for the callback to be called
+     * @param  mixed  $callable  Closure, callable or string that will be called if specifications pass
+     * @param  \Illuminate\Contracts\Container\Container  $container  The service container that will be used to resolve the callable
      */
     public function __construct(array $specs, $callable, ContainerInterface $container)
     {

@@ -25,8 +25,8 @@ class ContainerAwareCallbackFactory extends CallbackFactory
     protected $container;
 
     /**
-     * @param string                                    $class     The CallbackFactory
-     * @param \Illuminate\Contracts\Container\Container $container The service container that will be used to resolve the callable
+     * @param  string  $class  The CallbackFactory
+     * @param  \Illuminate\Contracts\Container\Container  $container  The service container that will be used to resolve the callable
      *
      * @throws \SM\SMException if the CallbackFactory class does not exist
      */

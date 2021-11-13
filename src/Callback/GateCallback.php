@@ -13,8 +13,8 @@ class GateCallback extends Callback
     protected $gate;
 
     /**
-     * @param array                                  $specs Specification for the callback to be called
-     * @param \Illuminate\Contracts\Auth\Access\Gate $gate  The service container that will be used to resolve the callable
+     * @param  array  $specs  Specification for the callback to be called
+     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate  The service container that will be used to resolve the callable
      */
     public function __construct(array $specs, Gate $gate)
     {

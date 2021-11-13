@@ -33,7 +33,7 @@ class Visualize extends Command
     /**
      * Create a new command instance.
      *
-     * @param array $config
+     * @param  array  $config
      */
     public function __construct(array $config)
     {

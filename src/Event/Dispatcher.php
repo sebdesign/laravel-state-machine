@@ -14,7 +14,7 @@ class Dispatcher implements EventDispatcherInterface
     protected $dispatcher;
 
     /**
-     * @param \Illuminate\Contracts\Events\Dispatcher $dispatcher
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      */
     public function __construct(DispatcherContract $dispatcher)
     {

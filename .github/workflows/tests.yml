@@ -63,11 +63,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" "scrutinizer/ocular:^1.8" --no-interaction --no-update
+          composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
           composer update --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose --whitelist=src --coverage-clover=build/coverage/coverage.clover
 
-      - name: Upload coverage
-        run: vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage/coverage.clover
+      - name: Upload Scrutinizer coverage
+        uses: sudo-bot/action-scrutinizer@latest
+        with:
+          cli-args: "--format=php-clover build/coverage/coverage.clover"

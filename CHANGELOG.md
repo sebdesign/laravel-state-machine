@@ -5,6 +5,14 @@ All Notable changes to `laravel-state-machine` will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.3.0] - 2022-02-02
+
+### Added
+- Add support for Laravel 9.0
+
+### Fixed
+- Fix return types to event dispatcher ([#60](https://github.com/sebdesign/laravel-state-machine/issues/60))
+
 ## [v3.2.2] - 2021-11-27
 
 Add support for PHP 8.1

@@ -70,7 +70,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getListeners(string $eventName = null)
+    public function getListeners(string $eventName = null): array
     {
         throw new \Exception('Please use `Event::getListeners()`.');
     }
@@ -78,7 +78,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getListenerPriority(string $eventName, $listener)
+    public function getListenerPriority(string $eventName, $listener): ?int
     {
         throw new \Exception('Event priority is not supported anymore in Laravel.');
     }
@@ -86,7 +86,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function hasListeners(string $eventName = null)
+    public function hasListeners(string $eventName = null): bool
     {
         throw new \Exception('Please use `Event::hasListeners()`.');
     }

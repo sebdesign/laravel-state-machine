@@ -431,7 +431,7 @@ $stateMachine->metadata()->transition('ask_for_changes', 'invalid', 'default');
 
 An artisan command for debugging graphs is included. It accepts the name of the graph as an argument. If no arguments are passed, the graph name will be asked interactively.
 
-```bash
+```
 $ php artisan winzou:state-machine:debug simple
 
 +--------------------+-----------------------+

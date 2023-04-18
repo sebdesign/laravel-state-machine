@@ -107,7 +107,7 @@ class Debug extends Command
             }
 
             if (isset($state['metadata'])) {
-                $metadata = json_encode($state['metadata'], JSON_PRETTY_PRINT);
+                $metadata = json_encode($state['metadata'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             } else {
                 $metadata = null;
             }

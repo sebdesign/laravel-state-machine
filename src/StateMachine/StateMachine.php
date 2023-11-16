@@ -114,6 +114,25 @@ class StateMachine extends BaseStateMachine
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getState(): string
+    {
+        $accessor = new PropertyAccessor();
+        $state = $accessor->getValue($this->object, $this->config['property_path']);
+
+        if ($state instanceof \BackedEnum) {
+            return $state->value;
+        }
+
+        if ($state instanceof \UnitEnum) {
+            return $state->name;
+        }
+
+        return $state;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setState($state): void

@@ -1,6 +1,8 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
   tests:
@@ -10,7 +12,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.2, 8.1, 8.0, 7.4, 7.3, 7.2]
-        laravel: [^10.0, ^9.0, ^8.0, ^7.0]
+        laravel: ['11.0', ^7.0, ^8.0, ^9.0, ^10.0]
         include:
           - laravel: ^7.0
             testbench: ^5.0
@@ -24,6 +26,9 @@ jobs:
           - laravel: ^10.0
             testbench: ^8.0
             phpunit: ^9.5
+          - laravel: '11.0'
+            testbench: ^9.0
+            phpunit: '8.2'
         exclude:
           - laravel: ^10.0
             php: 8.0
@@ -47,6 +52,16 @@ jobs:
             php: 8.2
           - laravel: ^7.0
             php: 8.1
+          - laravel: '11.0'
+            php: 8.1
+          - laravel: '11.0'
+            php: 8.0
+          - laravel: '11.0'
+            php: 7.4
+          - laravel: '11.0'
+            php: 7.3
+          - laravel: '11.0'
+            php: 7.2
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
@@ -87,4 +102,4 @@ jobs:
       - name: Upload Scrutinizer coverage
         uses: sudo-bot/action-scrutinizer@latest
         with:
-          cli-args: "--format=php-clover build/coverage/coverage.clover"
+          cli-args: --format=php-clover build/coverage/coverage.clover

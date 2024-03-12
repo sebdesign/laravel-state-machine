@@ -94,10 +94,10 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
-          composer update --prefer-dist --no-interaction --no-suggest
+          composer update --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose --whitelist=src --coverage-clover=build/coverage/coverage.clover
+        run: vendor/bin/phpunit --coverage-clover=build/coverage/coverage.clover
 
       - name: Upload Scrutinizer coverage
         uses: sudo-bot/action-scrutinizer@latest

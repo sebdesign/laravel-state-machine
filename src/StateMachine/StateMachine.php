@@ -129,7 +129,7 @@ class StateMachine extends BaseStateMachine
             return $state->name;
         }
 
-        return $state;
+        return $state ?? '';
     }
 
     /**

@@ -24,7 +24,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch(object $event, string $eventName = null): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         if (is_null($eventName)) {
             $this->dispatcher->dispatch($event);
@@ -70,7 +70,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getListeners(string $eventName = null): array
+    public function getListeners(?string $eventName = null): array
     {
         throw new \Exception('Please use `Event::getListeners()`.');
     }
@@ -86,7 +86,7 @@ class Dispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function hasListeners(string $eventName = null): bool
+    public function hasListeners(?string $eventName = null): bool
     {
         throw new \Exception('Please use `Event::hasListeners()`.');
     }

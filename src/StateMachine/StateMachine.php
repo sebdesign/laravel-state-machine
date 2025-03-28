@@ -27,9 +27,9 @@ class StateMachine extends BaseStateMachine
     public function __construct(
         $object,
         array $config,
-        EventDispatcherInterface $dispatcher = null,
-        CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface $metadataStore = null
+        ?EventDispatcherInterface $dispatcher = null,
+        ?CallbackFactoryInterface $callbackFactory = null,
+        ?MetadataStoreInterface $metadataStore = null
     ) {
         parent::__construct($object, $config, $dispatcher, $callbackFactory);
 

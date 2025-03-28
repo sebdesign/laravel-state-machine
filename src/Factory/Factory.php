@@ -19,9 +19,9 @@ class Factory extends BaseFactory
 
     public function __construct(
         array $configs,
-        EventDispatcherInterface $dispatcher = null,
-        CallbackFactoryInterface $callbackFactory = null,
-        MetadataStoreInterface $metadataStore = null
+        ?EventDispatcherInterface $dispatcher = null,
+        ?CallbackFactoryInterface $callbackFactory = null,
+        ?MetadataStoreInterface $metadataStore = null
     ) {
         parent::__construct($configs, $dispatcher, $callbackFactory);
 

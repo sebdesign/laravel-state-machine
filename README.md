@@ -27,7 +27,7 @@ If you need to install this package in older Laravel installations, use the tabl
 
 | Package  | Laravel         | PHP                             |
 | :------- | :-------------- | :------------------------------ |
-| **^3.0** | `^7.0 - ^9.0`   | <code>^7.2.5</code>             |
+| **^3.0** | `^7.0 - ^12.0`  | <code>^7.2.5</code>             |
 | **^2.0** | `5.5.* - ^6.0`  | <code>^7.0</code>               |
 | **^1.0** | `5.1.* - 5.8.*` | <code>^5.5.9 &#124; ^7.0</code> |
 

@@ -38,7 +38,7 @@ return [
                 'to' => 'pending_review',
             ],
             'ask_for_changes' => [
-                'from' =>  ['pending_review', 'accepted'],
+                'from' => ['pending_review', 'accepted'],
                 'to' => 'awaiting_changes',
                 'metadata' => ['title' => 'Ask for changes'],
             ],
@@ -48,15 +48,15 @@ return [
             ],
             'submit_changes' => [
                 'from' => ['awaiting_changes'],
-                'to' =>  'pending_review',
+                'to' => 'pending_review',
             ],
             'approve' => [
                 'from' => ['pending_review', 'rejected'],
-                'to' =>  'accepted',
+                'to' => 'accepted',
             ],
             'publish' => [
                 'from' => ['accepted'],
-                'to' =>  'published',
+                'to' => 'published',
             ],
         ],
 

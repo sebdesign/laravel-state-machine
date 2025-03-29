@@ -48,7 +48,7 @@ class ContainerAwareCallbackFactory extends CallbackFactory
 
         if (! isset($specs['do'])) {
             throw new SMException(sprintf(
-               'CallbackFactory::get needs the index "do" to be able to build a callback, array %s given.',
+                'CallbackFactory::get needs the index "do" to be able to build a callback, array %s given.',
                 json_encode($specs)
             ));
         }

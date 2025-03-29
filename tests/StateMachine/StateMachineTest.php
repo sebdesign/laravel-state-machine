@@ -341,7 +341,7 @@ class StateMachineTest extends TestCase
                         'metadata' => ['title' => 'Create'],
                     ],
                     'ask_for_changes' => [
-                        'from' =>  ['pending_review', 'accepted'],
+                        'from' => ['pending_review', 'accepted'],
                         'to' => 'awaiting_changes',
                     ],
                 ],

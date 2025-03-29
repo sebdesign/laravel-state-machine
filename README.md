@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/sebdesign/laravel-state-machine.svg?style=flat-square)](https://packagist.org/packages/sebdesign/laravel-state-machine)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/github/workflow/status/sebdesign/laravel-state-machine/Tests/master?style=flat-square)](https://github.com/sebdesign/laravel-state-machine/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/sebdesign/laravel-state-machine/tests.yml?style=flat-square)](https://github.com/sebdesign/laravel-state-machine/actions)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/sebdesign/laravel-state-machine/master?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/sebdesign/laravel-state-machine/master?style=flat-square)](https://scrutinizer-ci.com/g/sebdesign/laravel-state-machine/?branch=master)
 [![StyleCI](https://styleci.io/repos/78893356/shield?style=flat-square)](https://styleci.io/repos/78893356)
@@ -25,15 +25,15 @@ composer require sebdesign/laravel-state-machine
 
 If you need to install this package in older Laravel installations, use the table below to find a compatible version.
 
-| Package | Laravel | PHP |
-| :--- | :--- | :--- |
-| **^3.0** | `^7.0 - ^9.0` | <code>^7.2.5</code> |
-| **^2.0** | `5.5.* - ^6.0` | <code>^7.0</code> |
+| Package  | Laravel         | PHP                             |
+| :------- | :-------------- | :------------------------------ |
+| **^3.0** | `^7.0 - ^9.0`   | <code>^7.2.5</code>             |
+| **^2.0** | `5.5.* - ^6.0`  | <code>^7.0</code>               |
 | **^1.0** | `5.1.* - 5.8.*` | <code>^5.5.9 &#124; ^7.0</code> |
 
 Since version 5.5, Laravel uses package auto-discovery, so you don't need to manually add the ServiceProvider and the facade. If you don't use auto-discovery or you are using an older version, add the service provider and the facade in config/app.php.
 
-``` php
+```php
 <?php
 
 'providers' => [
@@ -49,7 +49,7 @@ Since version 5.5, Laravel uses package auto-discovery, so you don't need to man
 
 Publish the config file in `config/state-machine.php`.
 
-``` bash
+```bash
 php artisan vendor:publish --provider="Sebdesign\SM\ServiceProvider"
 ```
 
@@ -57,7 +57,7 @@ Please see the documentation of the [StateMachineBundle](https://github.com/winz
 
 ## Usage
 
-``` php
+```php
 <?php
 
 // Get the article
@@ -77,7 +77,7 @@ public function method(SM\Factory\FactoryInterface $factory)
 
 Now you can use the `$stateMachine` to interact with the state of the `$article`.
 
-``` php
+```php
 <?php
 
 // Get the actual state of the object
@@ -124,7 +124,7 @@ You want to call the `handle` method on the `MyService` class to determine if th
 ],
 ```
 
-You can specify callbacks in array format, e.g. `['Class', 'method']`, or in *@* delimited string format, e.g. `Class@method`.
+You can specify callbacks in array format, e.g. `['Class', 'method']`, or in _@_ delimited string format, e.g. `Class@method`.
 
 ### Using Gates and Policies
 
@@ -249,6 +249,7 @@ This array will be passed to the `Sebdesign\SM\Event\TransitionEvent`.
 You can access the array using `$event->getContext()` in your event listeners or callbacks.
 
 Example using an event listener:
+
 ```php
 <?php
 
@@ -266,6 +267,7 @@ $stateMachine->can('approve', ['approved_at' => now()]);
 ```
 
 Example using a callback:
+
 ```php
 <?php
 
@@ -488,7 +490,7 @@ $ php artisan winzou:state-machine:debug simple
 An artisan command for generating an image of a given graph is included. It accepts the name of the graph as an argument.
 It's taken from the corresponding bundle for Symfony: [https://github.com/MadMind/StateMachineVisualizationBundle](https://github.com/MadMind/StateMachineVisualizationBundle), so all credits goes to the original author.
 
-If you want to run this command, you need to have installed **dot** - Part of graphviz package ([http://www.graphviz.org/](http://www.graphviz.org/)). In your mac, this is equal to having run ```brew install graphviz```
+If you want to run this command, you need to have installed **dot** - Part of graphviz package ([http://www.graphviz.org/](http://www.graphviz.org/)). In your mac, this is equal to having run `brew install graphviz`
 
 ```bash
 php artisan winzou:state-machine:visualize {graph? : A state machine graph} {--output=./graph.jpg} {--format=jpg} {--direction=TB} {--shape=circle} {--dot-path=/usr/local/bin/dot}
@@ -508,7 +510,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Testing
 
-``` bash
+```bash
 $ composer test
 ```
 
@@ -522,7 +524,7 @@ If you discover any security related issues, please email info@sebdesign.eu inst
 
 ## Credits
 
-- [Alexandre Bacco](https://github.com/winzou)
+-   [Alexandre Bacco](https://github.com/winzou)
 
 ## License
 

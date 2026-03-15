@@ -69,6 +69,8 @@ jobs:
           - laravel: ^11.0
             php: 7.2
           - laravel: ^10.0
+            php: 8.5
+          - laravel: ^10.0
             php: 8.4
           - laravel: ^10.0
             php: 8.0
@@ -79,6 +81,8 @@ jobs:
           - laravel: ^10.0
             php: 7.2
           - laravel: ^9.0
+            php: 8.5
+          - laravel: ^9.0
             php: 8.4
           - laravel: ^9.0
             php: 8.3
@@ -89,6 +93,8 @@ jobs:
           - laravel: ^9.0
             php: 7.2
           - laravel: ^8.0
+            php: 8.5
+          - laravel: ^8.0
             php: 8.4
           - laravel: ^8.0
             php: 8.3
@@ -98,6 +104,8 @@ jobs:
             php: 8.1
           - laravel: ^8.0
             php: 7.2
+          - laravel: ^7.0
+            php: 8.5
           - laravel: ^7.0
             php: 8.4
           - laravel: ^7.0

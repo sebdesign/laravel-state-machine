@@ -5,6 +5,12 @@ All Notable changes to `laravel-state-machine` will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.4.7] - 2026-03-15
+
+### Added
+
+-   Laravel 13.x Compatibility by [@laravel-shift](https://github.com/laravel-shift) in https://github.com/sebdesign/laravel-state-machine/pull/76
+
 ## [v3.4.6] - 2025-03-28
 
 ### Fixed
